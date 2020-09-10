@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(SolutionDir)\BannerlordTweaks.props" />
   <PropertyGroup>
-    <MNB2DIR>E:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord</MNB2DIR>
+    <!-- Get this from Props file or define here <MNB2DIR>[path]</MNB2DIR> -->
     <MOD_ID>BannerlordTweaks</MOD_ID>
     <MOD_OUTDIR>$(MNB2DIR)\Modules</MOD_OUTDIR>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,25 +48,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ModLib.Definitions">
-      <HintPath>E:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Save\ModLib.Definitions.dll</HintPath>
+      <HintPath>$(MNB2DIR)\LocalReferences\ModLib.Definitions.dll</HintPath>
     </Reference>
     <Reference Include="ModLib">
-      <HintPath>E:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Save\ModLib.dll</HintPath>
+      <HintPath>$(MNB2DIR)\LocalReferences\ModLib.dll</HintPath>
     </Reference>
     <Reference Include="ModLib.Patches">
-      <HintPath>E:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Save\ModLib.Patches.dll</HintPath>
+      <HintPath>$(MNB2DIR)\LocalReferences\ModLib.Patches.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.ObjectSystem">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)\bin\Win64_Shipping_Client\TaleWorlds.ObjectSystem.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.ObjectSystem.dll</HintPath>
     </Reference>
     <Reference Include="SandBox">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)Modules\SandBox\bin\Win64_Shipping_Client\SandBox.dll</HintPath>
+      <HintPath>$(MNB2DIR)\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.dll</HintPath>
     </Reference>
     <Reference Include="SandBox.ViewModelCollection">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)Modules\SandBox\bin\Win64_Shipping_Client\SandBox.ViewModelCollection.dll</HintPath>
+      <HintPath>$(MNB2DIR)\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.ViewModelCollection.dll</HintPath>
     </Reference>
     <Reference Include="StoryMode">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)Modules\StoryMode\bin\Win64_Shipping_Client\StoryMode.dll</HintPath>
+      <HintPath>$(MNB2DIR)\Modules\StoryMode\bin\Win64_Shipping_Client\StoryMode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,37 +78,37 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TaleWorlds.CampaignSystem">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.CampaignSystem.ViewModelCollection">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.ViewModelCollection.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.Core">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.Core.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.Core.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.Core.ViewModelCollection">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.Core.ViewModelCollection.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.Core.ViewModelCollection.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.DotNet">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.DotNet.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.DotNet.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.Engine">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.Engine.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.Engine.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.InputSystem">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.InputSystem.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.Library">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.Library.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.Library.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.Localization">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.Localization.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.Localization.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.MountAndBlade">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.ObjectSystem">
-      <HintPath>$(MOUNT_AND_BLADE_DIR)bin\Win64_Shipping_Client\TaleWorlds.ObjectSystem.dll</HintPath>
+      <HintPath>$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds.ObjectSystem.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
