@@ -159,10 +159,18 @@
     <Compile Include="TweakedDifficultyModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Contributions.txt" />
-    <Content Include="SubModule.xml" />
-    <Content Include="README.md" />
-    <Content Include="LICENSE" />
+    <Content Include="Contributions.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SubModule.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
