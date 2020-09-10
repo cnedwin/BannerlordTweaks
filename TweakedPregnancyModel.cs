@@ -30,9 +30,11 @@ namespace BannerlordTweaks
             ? Settings.Instance.PregnancyDuration
             : base.PregnancyDurationInDays;
 
-        public override float CharacterFertilityProbability => Settings.Instance.CharacterFertilityProbabilityTweakEnabled
-            ? Settings.Instance.CharacterFertilityProbability
+        /* Looks like CharacterFertilityProbability was removed in 1.5.2
+        public override float CharacterFertilityProbability => BannerlordTweaksSettings.Instance.CharacterFertilityProbabilityTweakEnabled
+            ? BannerlordTweaksSettings.Instance.CharacterFertilityProbability
             : base.CharacterFertilityProbability;
+        */
 
         public override float GetDailyChanceOfPregnancyForHero(Hero hero)
         {
