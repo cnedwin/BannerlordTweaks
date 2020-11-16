@@ -66,7 +66,7 @@ namespace BannerlordTweaks
                 //num2 *= 0.2;
                 //num /= (float)num2;
                 //num = (1.2f - (hero.Age - 18f) * 0.04f) / (float)(hero.Children.Count + 1 ^ 2) * 0.2f * bonuses.ResultNumber;
-            }
+             }
 
             if (BannerlordTweaksSettings.Instance.ClanFertilityBonusEnabled && hero.Clan == Hero.MainHero.Clan)
                 //num *= 1.25f;

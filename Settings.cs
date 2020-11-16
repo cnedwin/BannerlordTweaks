@@ -9,7 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => new TextObject("综合设置1.5.4.3 (cnedwin)", new Dictionary<string, TextObject>
+        public override string DisplayName => new TextObject("综合设置1.5.4.6 (cnedwin)", new Dictionary<string, TextObject>
     {
         { "VERSION", new TextObject(typeof(BannerlordTweaksSettings).Assembly.GetName().Version.ToString(3)) }
     }).ToString();
@@ -27,8 +27,24 @@ namespace BannerlordTweaks
         [SettingPropertyBool("远程同伴技能管理", Order = 3, RequireRestart = false, HintText = "当你的同伴不在你的队伍时，允许你管理他们的技能。")]
         public bool RemoteCompanionSkillManagementEnabled { get; set; } = true;
 
+        [SettingPropertyBool("Enable Auto-Extenson of 'Stop the Conspiracy' Quest Timer", Order = 4, RequireRestart = false, HintText = "Automatically extends the timer of the 'Stop the Conspiracy' quest as TW hasn't finished it yet.")]
+        public bool TweakedConspiracyQuestTimerEnabled { get; set; } = true;
+
         #endregion
 
+        #region Barterables
+
+        [SettingPropertyBool("交易调整", Order = 1, RequireRestart = false, HintText = "启用影响物物交换的调整（婚姻，加入您的阵营等）.)"), SettingPropertyGroup("交易调整")]
+        public bool BarterablesTweaksEnabled { get; set; } = true;
+
+        [SettingPropertyInteger("派系加入的交易调整", 1, 200, Order = 0, RequireRestart = false, HintText = "调整摇摆派系加入您的王国的费用百分比。 原始值为100％（不变）。 50 =降低50％的成本。 150 =成本增加50％，依此类推。"), SettingPropertyGroup("交易调整")]
+        public int BarterablesJoinKingdomAsClanAdjustment { get; set; } = 100;
+
+        [SettingPropertyBool("使用派系加入交易的替代公式", Order = 1, RequireRestart = false, HintText = "应用替代公式来计算摇摆派系加入您的王国的成本，重点更多放在关系上。 [与主的关系越高，以物易物越便宜]。"), SettingPropertyGroup("交易调整")]
+        public bool BarterablesJoinKingdomAsClanAltFormulaEnabled { get; set; } = false;
+
+
+        #endregion
         #region Crafting stamina Settings
         [SettingPropertyBool("锻造耐力调整", Order = 1, RequireRestart = false, HintText = "影响制作耐力的调整."), SettingPropertyGroup("锻造调整")]
         public bool CraftingStaminaTweakEnabled { get; set; } = true;
@@ -144,6 +160,9 @@ namespace BannerlordTweaks
         public bool CompanionSkillExperienceMultiplierEnabled { get; set; } = false;
 
         [SettingPropertyFloatingInteger("英雄技能经验倍数", 1f, 5f, HintText = "对技能获得的经验量应用乘数.只影响玩家."), SettingPropertyGroup("技能经验")]
+        // [SettingProperty("Enable Flat Experience Multiplier Override", "If enabled, overrides the mod's experience curve multiplier calculation and replaces it with the override multiplier. This means that experience will be multiplied by the same value, independant of the skill level.")]
+        // [SettingPropertyGroup("Hero Skill Experience Tweak")]
+        //public bool HeroSkillExperienceOverrideMultiplierEnabled { get; set; } = false;
         public float HeroSkillExperienceMultiplier { get; set; } = 1f;
 
         [SettingPropertyFloatingInteger("同伴技能经验倍数", 1f, 20f, RequireRestart = false, HintText = "将乘数乘以所获得的技能经验。 仅影响同伴."), SettingPropertyGroup("技能经验")]
@@ -213,6 +232,8 @@ namespace BannerlordTweaks
         [SettingPropertyInteger("氏族等级奖励", 0, 10, HintText = "默认值为1。将奖励设置为每个氏族等级的同伴限制。这个值乘以你的氏族等级."), SettingPropertyGroup("同伴数量")]
         public int CompanionLimitBonusPerClanTier { get; set; } = 3;
 
+        [SettingPropertyBool("Enable Unlimited Wanderers Patch", Order = 1, RequireRestart = false, HintText = "Removes the soft cap on the maximum number of potential companions who can spawn. Native limits the # of wanderers to ~25. This will remove that limit. Note: Requires a new campaign to take effect, as the cap is set when a new game is generated. Credit to Bleinz for his UnlimitedWanderers mod."), SettingPropertyGroup("Companion Limit Tweak")]
+        public bool UnlimitedWanderersPatch { get; set; } = false;
         #endregion
 
         #region Settlement militia bonus tweak
@@ -521,6 +542,8 @@ namespace BannerlordTweaks
         [SettingPropertyInteger("囚禁最少天数", 0, 180, HintText = "领主在试图逃跑前被囚禁的最少天数."), SettingPropertyGroup("牢狱调整")]
         public int MinimumDaysOfImprisonment { get; set; } = 10;
 
+        [SettingPropertyBool("Enable Missing Prisoner Hero Fix", Order = 2, HintText = "Will attempt to detect and release prisoner Heroes who may be bugged and do not respawn. Will trigger 3 days after the Minimum Days of Imprisonment setting."), SettingPropertyGroup("Imprisonment Period Tweak")]
+        public bool EnableMissingHeroFix { get; set; } = true;
         #endregion
 
         #region Daily Troop Experience Tweak
@@ -602,7 +625,7 @@ namespace BannerlordTweaks
 
         #endregion
 
-        #region W年龄调整
+        #region 年龄调整
 
         [SettingPropertyBool("启用工资调整", Order = 1, RequireRestart = false, HintText = "允许您降低/增加各个群体的工资。[实验性]"), SettingPropertyGroup("工资调整")]
         public bool PartyWageTweaksEnabled { get; set; } = false;
@@ -634,5 +657,16 @@ namespace BannerlordTweaks
         //public bool AICanDecapitate { get; set; } = false;
 
         #endregion
+        /* Disabled until I can get the CreateArmy issue worked out.
+        #region Army Gathering Tweaks
+
+        [SettingPropertyBool("Gather Army Tweaks Enabled", Order = 1, RequireRestart = false, HintText = "Allows you to modify ability to gather armies before establishing player kingdom."), SettingPropertyGroup("Gather Army Tweak")]
+        public bool GatherArmyTweakEnabled { get; set; } = false;
+
+        [SettingPropertyBool("Create Army As Mercenary", Order = 1, RequireRestart = false, HintText = "Allows you to create armies as a mercenary and pay in gold."), SettingPropertyGroup("Gather Army Tweak")]
+        public bool AllowCreateArmyAsMerc { get; set; } = false;
+        
+        #endregion
+        */
     }
 }
