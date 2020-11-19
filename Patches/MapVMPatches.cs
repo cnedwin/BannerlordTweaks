@@ -100,7 +100,7 @@ namespace BannerlordTweaks.Patches
 					{
 						DebugHelpers.DebugMessage("MainParty.Army is null.");
 						if ((MobileParty.MainParty.MapFaction as Kingdom) is null)
-                        {
+						{
 							string temp_kingdom = Hero.MainHero.Name.ToString();
 							CampaignCheats.CreatePlayerKingdom(new List<string>());
 						}
@@ -120,7 +120,7 @@ namespace BannerlordTweaks.Patches
 				}
 				if (____partiesToRemove.Count > 0)
 				{
-					DebugHelpers.DebugMessage("Have parties to remove."); 
+					DebugHelpers.DebugMessage("Have parties to remove.");
 					bool flag2 = false;
 					foreach (ArmyManagementItemVM armyManagementItemVM2 in ____partiesToRemove)
 					{
@@ -148,7 +148,7 @@ namespace BannerlordTweaks.Patches
 					____onClose();
 					return false;
 				}
-				else 
+				else
 					InformationManager.AddQuickInformation(new TextObject("{=Xmw93W6a}Not Enough Influence", null), 0, null, "");
 
 				return false;
