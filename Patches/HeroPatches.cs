@@ -26,7 +26,7 @@ namespace BannerlordTweaks.Patches
         {
             try
             {
-                
+
                 if (hdFieldInfo == null) GetFieldInfo();
 
                 HeroDeveloper hd = (HeroDeveloper)hdFieldInfo.GetValue(__instance);
@@ -43,11 +43,11 @@ namespace BannerlordTweaks.Patches
                         }
                         if (BannerlordTweaksSettings.Instance.CompanionSkillExperienceMultiplierEnabled && !hd.Hero.IsHumanPlayerCharacter &&
                            //((hd.Hero.IsPlayerCompanion == true || hd.Hero.Clan == Hero.MainHero.Clan) || hd.Hero.Clan == Hero.MainHero.Clan || hd.Hero.Spouse == Hero.MainHero || Hero.MainHero.Siblings.Contains(hd.Hero) || (Hero.MainHero.Siblings.Contains(hd.Hero.Spouse) && (hd.Hero.MapFaction == Hero.MainHero.MapFaction))))
-                           ( hd.Hero.Clan == Hero.MainHero.Clan) )
+                           (hd.Hero.Clan == Hero.MainHero.Clan))
                         {
                             float newXpAmount = (int)Math.Ceiling(xpAmount * BannerlordTweaksSettings.Instance.CompanionSkillExperienceMultiplier);
                             hd.AddSkillXp(skill, newXpAmount, true, true);
-                           //DebugHelpers.DebugMessage("HeroSkillXPPatch: Companion: " + hd.Hero.Name + " - Clan: "+ hd.Hero.Clan.Name + " - Skill is: " + skill.Name + " - XPAmount = " + xpAmount + " - NewXPAmount = " + newXpAmount);
+                            //DebugHelpers.DebugMessage("HeroSkillXPPatch: Companion: " + hd.Hero.Name + " - Clan: "+ hd.Hero.Clan.Name + " - Skill is: " + skill.Name + " - XPAmount = " + xpAmount + " - NewXPAmount = " + newXpAmount);
                         }
                     }
                     else

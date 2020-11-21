@@ -9,7 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => new TextObject("综合设置1.5.4.6 (cnedwin)", new Dictionary<string, TextObject>
+        public override string DisplayName => new TextObject("综合设置1.5.4.7 (cnedwin)", new Dictionary<string, TextObject>
     {
         { "VERSION", new TextObject(typeof(BannerlordTweaksSettings).Assembly.GetName().Version.ToString(3)) }
     }).ToString();
@@ -27,7 +27,7 @@ namespace BannerlordTweaks
         [SettingPropertyBool("远程同伴技能管理", Order = 3, RequireRestart = false, HintText = "当你的同伴不在你的队伍时，允许你管理他们的技能。")]
         public bool RemoteCompanionSkillManagementEnabled { get; set; } = true;
 
-        [SettingPropertyBool("Enable Auto-Extenson of 'Stop the Conspiracy' Quest Timer", Order = 4, RequireRestart = false, HintText = "Automatically extends the timer of the 'Stop the Conspiracy' quest as TW hasn't finished it yet.")]
+        [SettingPropertyBool("启用“停止阴谋”任务计时器的自动扩展", Order = 4, RequireRestart = false, HintText = "由于TW尚未完成，因此自动延长“停止阴谋”任务的计时器。")]
         public bool TweakedConspiracyQuestTimerEnabled { get; set; } = true;
 
         #endregion
@@ -232,7 +232,7 @@ namespace BannerlordTweaks
         [SettingPropertyInteger("氏族等级奖励", 0, 10, HintText = "默认值为1。将奖励设置为每个氏族等级的同伴限制。这个值乘以你的氏族等级."), SettingPropertyGroup("同伴数量")]
         public int CompanionLimitBonusPerClanTier { get; set; } = 3;
 
-        [SettingPropertyBool("Enable Unlimited Wanderers Patch", Order = 1, RequireRestart = false, HintText = "Removes the soft cap on the maximum number of potential companions who can spawn. Native limits the # of wanderers to ~25. This will remove that limit. Note: Requires a new campaign to take effect, as the cap is set when a new game is generated. Credit to Bleinz for his UnlimitedWanderers mod."), SettingPropertyGroup("Companion Limit Tweak")]
+        [SettingPropertyBool("启用无限流浪者补丁", Order = 1, RequireRestart = false, HintText = "取消可产生的最大潜在同伴数量的上限。 本地人将流浪者的数量限制为〜25。 这将消除该限制。 注意：由于要在生成新游戏时设置上限，因此需要新的战役才能生效。"), SettingPropertyGroup("同伴数量")]
         public bool UnlimitedWanderersPatch { get; set; } = false;
         #endregion
 
@@ -533,16 +533,16 @@ namespace BannerlordTweaks
 
         #region Prisoner Tweaks
 
-        [SettingPropertyBool("启用牢狱调整", Order = 1, RequireRestart = false, HintText = "增加贵族试图逃脱监禁前的最短时间."), SettingPropertyGroup("牢狱调整")]
+        [SettingPropertyBool("启用牢狱调整", Order = 1, RequireRestart = false, HintText = "增加贵族试图逃脱监禁前的最短时间."), SettingPropertyGroup("监禁调整")]
         public bool PrisonerImprisonmentTweakEnabled { get; set; } = false;
 
-        [SettingPropertyBool("仅限玩家俘虏", Order = 1, RequireRestart = false, HintText = "这个调整是否只适用于玩家关押的囚犯."), SettingPropertyGroup("牢狱调整")]
+        [SettingPropertyBool("仅限玩家俘虏", Order = 1, RequireRestart = false, HintText = "这个调整是否只适用于玩家关押的囚犯."), SettingPropertyGroup("监禁调整")]
         public bool PrisonerImprisonmentPlayerOnly { get; set; } = true;
 
-        [SettingPropertyInteger("囚禁最少天数", 0, 180, HintText = "领主在试图逃跑前被囚禁的最少天数."), SettingPropertyGroup("牢狱调整")]
+        [SettingPropertyInteger("囚禁最少天数", 0, 180, HintText = "领主在试图逃跑前被囚禁的最少天数."), SettingPropertyGroup("监禁调整")]
         public int MinimumDaysOfImprisonment { get; set; } = 10;
 
-        [SettingPropertyBool("Enable Missing Prisoner Hero Fix", Order = 2, HintText = "Will attempt to detect and release prisoner Heroes who may be bugged and do not respawn. Will trigger 3 days after the Minimum Days of Imprisonment setting."), SettingPropertyGroup("Imprisonment Period Tweak")]
+        [SettingPropertyBool("启用失踪囚犯英雄修复", Order = 2, HintText = "将尝试检测并释放可能被打扰且不会重生的囚犯英雄。 将在“最低监禁天数”设置后3天触发。"), SettingPropertyGroup("监禁调整")]
         public bool EnableMissingHeroFix { get; set; } = true;
         #endregion
 
