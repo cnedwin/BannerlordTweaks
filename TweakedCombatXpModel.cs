@@ -1,58 +1,49 @@
-﻿// BannerlordTweaks.TweakedCombatXpModel
-using System;
-using BannerlordTweaks;
-using MCM.Abstractions.Settings.Base.Global;
+﻿using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents.Map;
 using TaleWorlds.Library;
 
-public class TweakedCombatXpModel : DefaultCombatXpModel
+namespace BannerlordTweaks
 {
-	public override void GetXpFromHit(CharacterObject attackerTroop, CharacterObject captain, CharacterObject attackedTroop, PartyBase party, int damage, bool isFatal, MissionTypeEnum missionType, out int xpAmount)
-	{
-		if (attackerTroop == null || attackedTroop == null)
-		{
-			xpAmount = 0;
-			return;
-		}
-		int num = attackerTroop.MaxHitPoints();
-		xpAmount = MBMath.Round(0.4f * ((attackedTroop.GetPower() + 0.5f) * (float)(Math.Min(damage, num) + (isFatal ? num : 0))));
-		if (attackerTroop.IsHero)
-		{
-			switch (missionType)
-			{
-				case MissionTypeEnum.Tournament:
-					if (GlobalSettings<BannerlordTweaksSettings>.Instance!.TournamentHeroExperienceMultiplierEnabled)
-					{
-						xpAmount = MathF.Round(GlobalSettings<BannerlordTweaksSettings>.Instance!.TournamentHeroExperienceMultiplier * (float)xpAmount);
-					}
-					else
-					{
-						xpAmount = MathF.Round((float)xpAmount * 0.33f);
-					}
-					break;
-				case MissionTypeEnum.PracticeFight:
-					if (GlobalSettings<BannerlordTweaksSettings>.Instance!.ArenaHeroExperienceMultiplierEnabled)
-					{
-						xpAmount = MathF.Round(GlobalSettings<BannerlordTweaksSettings>.Instance!.ArenaHeroExperienceMultiplier * (float)xpAmount);
-					}
-					else
-					{
-						xpAmount = MathF.Round((float)xpAmount * 0.0625f);
-					}
-					break;
-			}
-		}
-		else if (missionType == MissionTypeEnum.Battle || missionType == MissionTypeEnum.SimulationBattle)
-		{
-			if (GlobalSettings<BannerlordTweaksSettings>.Instance!.TroopBattleSimulationExperienceMultiplierEnabled && missionType == MissionTypeEnum.SimulationBattle)
-			{
-				xpAmount = MathF.Round((float)xpAmount * GlobalSettings<BannerlordTweaksSettings>.Instance!.TroopBattleSimulationExperienceMultiplier);
-			}
-			else if (GlobalSettings<BannerlordTweaksSettings>.Instance!.TroopBattleExperienceMultiplierEnabled && missionType == MissionTypeEnum.Battle)
-			{
-				xpAmount = MathF.Round((float)xpAmount * GlobalSettings<BannerlordTweaksSettings>.Instance!.TroopBattleExperienceMultiplier);
-			}
-		}
-	}
+    public class TweakedCombatXpModel : DefaultCombatXpModel
+    {
+        // v1.4.3 - They added PartyBase param. Updated method to address build error.
+        // v1.5.5 - They added Captain param.
+        // ToDo: Update formula based on new code in DefaultCombatXpModel
+        public override void GetXpFromHit(CharacterObject attackerTroop, CharacterObject captain, CharacterObject attackedTroop, PartyBase party, int damage, bool isFatal, MissionTypeEnum missionType, out int xpAmount)
+        {
+            if (attackerTroop == null || attackedTroop == null)
+            {
+                xpAmount = 0;
+                return;
+            }
+            int num = attackerTroop.MaxHitPoints();
+            xpAmount = MBMath.Round(0.4f * ((attackedTroop.GetPower() + 0.5f) * (float)(Math.Min(damage, num) + (isFatal ? num : 0))));
+            //There are three things to do here: Tournament Experience, Arena Experience, Troop Experience.
+            if (attackerTroop.IsHero)
+            {
+                if (missionType == MissionTypeEnum.Tournament)
+                {
+                    if (BannerlordTweaksSettings.Instance.TournamentHeroExperienceMultiplierEnabled)
+                        xpAmount = (int)MathF.Round(BannerlordTweaksSettings.Instance.TournamentHeroExperienceMultiplier * (float)xpAmount);
+                    else
+                        xpAmount = MathF.Round((float)xpAmount * 0.33f);
+                }
+                else if (missionType == MissionTypeEnum.PracticeFight)
+                {
+                    if (BannerlordTweaksSettings.Instance.ArenaHeroExperienceMultiplierEnabled)
+                        xpAmount = (int)MathF.Round(BannerlordTweaksSettings.Instance.ArenaHeroExperienceMultiplier * (float)xpAmount);
+                    else
+                        xpAmount = MathF.Round((float)xpAmount * 0.0625f);
+                }
+            }
+            else if ((missionType == MissionTypeEnum.Battle || missionType == MissionTypeEnum.SimulationBattle))
+            {
+                if (BannerlordTweaksSettings.Instance.TroopBattleSimulationExperienceMultiplierEnabled && missionType == MissionTypeEnum.SimulationBattle)
+                    xpAmount = (int)MathF.Round(xpAmount * BannerlordTweaksSettings.Instance.TroopBattleSimulationExperienceMultiplier);
+                else if (BannerlordTweaksSettings.Instance.TroopBattleExperienceMultiplierEnabled && missionType == MissionTypeEnum.Battle)
+                    xpAmount = (int)MathF.Round(xpAmount * BannerlordTweaksSettings.Instance.TroopBattleExperienceMultiplier);
+            }
+        }
+    }
 }

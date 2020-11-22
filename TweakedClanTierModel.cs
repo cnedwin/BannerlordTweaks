@@ -1,33 +1,38 @@
 ﻿using System;
-using BannerlordTweaks;
-using MCM.Abstractions.Settings.Base.Global;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 
-public class TweakedClanTierModel : DefaultClanTierModel
+namespace BannerlordTweaks
 {
-	public override int GetCompanionLimit(Clan clan)
-	{
-		if (GlobalSettings<BannerlordTweaksSettings>.Instance!.CompanionLimitTweakEnabled)
-		{
-			int tier = clan.Tier;
-			int num = tier + 3;
-			ExplainedNumber explainedNumber = new ExplainedNumber(num);
-			if (clan.Leader.GetPerkValue(DefaultPerks.Leadership.WePledgeOurSwords))
-			{
-				explainedNumber.Add(DefaultPerks.Leadership.WePledgeOurSwords.PrimaryBonus);
-			}
-			return GlobalSettings<BannerlordTweaksSettings>.Instance!.CompanionBaseLimit + (int)explainedNumber.ResultNumber * GlobalSettings<BannerlordTweaksSettings>.Instance!.CompanionLimitBonusPerClanTier;
-		}
-		return base.GetCompanionLimit(clan);
-	}
+    public class TweakedClanTierModel : DefaultClanTierModel
+    {
 
-	public override int GetPartyLimitForTier(Clan clan, int clanTierToCheck)
-	{
-		if (GlobalSettings<BannerlordTweaksSettings>.Instance!.ClanPartiesLimitTweakEnabled && clan == Clan.PlayerClan)
-		{
-			return GlobalSettings<BannerlordTweaksSettings>.Instance!.BaseClanPartiesLimit + (int)Math.Floor((float)clanTierToCheck * GlobalSettings<BannerlordTweaksSettings>.Instance!.ClanPartiesBonusPerClanTier);
-		}
-		return base.GetPartyLimitForTier(clan, clanTierToCheck);
-	}
+        public override int GetCompanionLimit(Clan clan)
+        {
+            if (BannerlordTweaksSettings.Instance.CompanionLimitTweakEnabled)
+            {
+                int clanTier = clan.Tier;
+
+                // From the now-private GetCompanionLimitFromTier()
+                int companionLimitFromTier = clanTier + 3;
+
+                ExplainedNumber explainedNumber = new ExplainedNumber((float)companionLimitFromTier, null);
+                if (clan.Leader.GetPerkValue(DefaultPerks.Leadership.WePledgeOurSwords))
+                {
+                    explainedNumber.Add(DefaultPerks.Leadership.WePledgeOurSwords.PrimaryBonus, null, null);
+                }
+                return BannerlordTweaksSettings.Instance.CompanionBaseLimit + (int)explainedNumber.ResultNumber * BannerlordTweaksSettings.Instance.CompanionLimitBonusPerClanTier;
+            }
+            else
+                return base.GetCompanionLimit(clan);
+        }
+
+        public override int GetPartyLimitForTier(Clan clan, int clanTierToCheck)
+        {
+            if (BannerlordTweaksSettings.Instance.ClanPartiesLimitTweakEnabled && clan == Clan.PlayerClan)
+                return BannerlordTweaksSettings.Instance.BaseClanPartiesLimit + (int)Math.Floor(clanTierToCheck * BannerlordTweaksSettings.Instance.ClanPartiesBonusPerClanTier);
+            else
+                return base.GetPartyLimitForTier(clan, clanTierToCheck);
+        }
+    }
 }
