@@ -229,7 +229,7 @@ namespace BannerlordTweaks
         [SettingPropertyInteger("基础同伴上限", 1, 20, HintText = "游戏默认值为3,设置基础同伴数量限制."), SettingPropertyGroup("同伴数量")]
         public int CompanionBaseLimit { get; set; } = 3;
 
-        [SettingPropertyInteger("氏族等级奖励", 0, 10, HintText = "默认值为1。将奖励设置为每个氏族等级的同伴限制。这个值乘以你的氏族等级."), SettingPropertyGroup("同伴数量")]
+        [SettingPropertyInteger("氏族等级奖励", 0, 10, HintText = "默认值为1。将奖励设置为每个氏族等级的同伴限制。这个值乘以你的氏族等级.请注意，领导能力“我们誓言”的特权也会使此数字增加1。"), SettingPropertyGroup("同伴数量")]
         public int CompanionLimitBonusPerClanTier { get; set; } = 3;
 
         [SettingPropertyBool("启用无限流浪者补丁", Order = 1, RequireRestart = false, HintText = "取消可产生的最大潜在同伴数量的上限。 本地人将流浪者的数量限制为〜25。 这将消除该限制。 注意：由于要在生成新游戏时设置上限，因此需要新的战役才能生效。"), SettingPropertyGroup("同伴数量")]
@@ -393,7 +393,7 @@ namespace BannerlordTweaks
         [SettingPropertyBool("攻城器建造调整", Order = 1, RequireRestart = false, HintText = "增加围攻工程进度调整"), SettingPropertyGroup("攻城建设")]
         public bool SiegeConstructionProgressPerDayMultiplierEnabled { get; set; } = true;
 
-        [SettingPropertyFloatingInteger("每天攻城建造进度", 0.5f, 1.5f, HintText = "游戏默认值为1.0,对每日施工进度增加一个倍率,较小的数字将导致更长的围攻时间."), SettingPropertyGroup("攻城建设")]
+        [SettingPropertyFloatingInteger("每天攻城建造进度", 0.5f, 10.0f, HintText = "游戏默认值为1.0,对每日施工进度增加一个倍率,较小的数字将导致更长的围攻时间."), SettingPropertyGroup("攻城建设")]
         public float SiegeConstructionProgressPerDayMultiplier { get; set; } = 0.8f;
 
 
@@ -544,6 +544,13 @@ namespace BannerlordTweaks
 
         [SettingPropertyBool("启用失踪囚犯英雄修复", Order = 2, HintText = "将尝试检测并释放可能被打扰且不会重生的囚犯英雄。 将在“最低监禁天数”设置后3天触发。"), SettingPropertyGroup("监禁调整")]
         public bool EnableMissingHeroFix { get; set; } = true;
+
+        [SettingPropertyBool("启用囚犯人数奖励", Order = 1, RequireRestart = false, HintText = "使您的队伍的最大囚犯人数固定增加％."), SettingPropertyGroup("监禁调整/囚犯数量")]
+        public bool PrisonerSizeTweakEnabled { get; set; } = false;
+
+        [SettingPropertyInteger("囚犯人数奖励", 0, 500, Order = 0, RequireRestart = false, HintText = "为您队伍的最大监狱人数增加固定的％奖励. 10% = 10, +50% = 50, etc. [默认 0]"), SettingPropertyGroup("监禁调整/囚犯数量")]
+        public float PrisonerSizeTweakPercent { get; set; } = 0;
+
         #endregion
 
         #region Daily Troop Experience Tweak

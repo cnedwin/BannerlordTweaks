@@ -49,7 +49,7 @@ namespace BannerlordTweaks
 
         public static void DailyTick()
         {
-            DebugHelpers.DebugMessage("Respawn Fix : Triggered Daily Tick");
+            //DebugHelpers.DebugMessage("Respawn Fix : Triggered Daily Tick");
             foreach (Hero hero in Hero.All)
             {
                 if (hero == null) return;
