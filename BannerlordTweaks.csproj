@@ -24,7 +24,7 @@
     <OutputPath>D:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\zzBannerlordTweaks\bin\Win64_Shipping_Client\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -36,7 +36,7 @@
     <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DebugSymbols>true</DebugSymbols>
@@ -290,6 +290,8 @@
     <Compile Include="Patches\CampaignUIHelperPatch.cs" />
     <Compile Include="Patches\CharacterAttributeItemVMPatch.cs" />
     <Compile Include="Patches\CharacterVMPatch.cs" />
+    <Compile Include="Patches\DefaultTroopCampaignBehaviorPatch.cs" />
+    <Compile Include="Patches\DefaultArmyManagementCalculationModel.cs" />
     <Compile Include="Patches\CraftingCampaignBehaviourPatches.cs" />
     <Compile Include="Patches\CraftingVMPatch.cs" />
     <Compile Include="Patches\DefaultBattleRewardModelPatch.cs" />
@@ -301,6 +303,7 @@
     <Compile Include="Patches\DefaultCaravanPartySizeLimitModelPatch.cs" />
     <Compile Include="Patches\DefaultTournamentModelPatch.cs" />
     <Compile Include="Patches\DefaultBanditDensityModelPatch.cs" />
+    <Compile Include="Patches\DefaultTroopCountLimitModelPatch.cs.cs" />
     <Compile Include="Patches\HeroPatches.cs" />
     <Compile Include="Patches\HideoutMissionControllerPatches.cs" />
     <Compile Include="Patches\MapInfoVMPatch.cs" />
@@ -308,6 +311,7 @@
     <Compile Include="Patches\SkillVMPatch.cs" />
     <Compile Include="Patches\SmeltingVMPatches.cs" />
     <Compile Include="Patches\TournamentVMPatches.cs" />
+    <Compile Include="Patches\TweakedBattleSizePiatch.cs" />
     <Compile Include="Patches\UnlimitedWanderersPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />

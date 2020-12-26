@@ -9,7 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => new TextObject("综合设置1.5.4.7 (cnedwin)", new Dictionary<string, TextObject>
+        public override string DisplayName => new TextObject("综合设置1.5.5.9 (cnedwin)", new Dictionary<string, TextObject>
     {
         { "VERSION", new TextObject(typeof(BannerlordTweaksSettings).Assembly.GetName().Version.ToString(3)) }
     }).ToString();
@@ -278,6 +278,16 @@ namespace BannerlordTweaks
 
         #endregion
 
+        #region Settlement Tweaks - Disable Troop Donations
+
+        [SettingPropertyBool("禁止部队捐赠", Order = 1, RequireRestart = false, IsToggle = true, HintText = "禁止您的氏族（以及可选的王国）派遣部队向自己的住所捐款."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
+        public bool DisableTroopDonationPatchEnabled { get; set; } = false;
+
+        [SettingPropertyBool("禁止部队捐赠 - 应用到王国", Order = 1, RequireRestart = false, HintText = "将禁用部队捐赠扩展到整个王国的拥有的定居点."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
+        public bool DisableTroopDonationFactionWideEnabled { get; set; } = false;
+
+        #endregion
+        
         #region Castle buildings bonuses
 
         [SettingPropertyBool("启用城堡训练场调整", Order = 1, RequireRestart = false, HintText = "改变培训场为每个级别提供的经验"), SettingPropertyGroup("定居点建筑调整/城堡建筑调整/城堡训练场调整")]
@@ -408,16 +418,31 @@ namespace BannerlordTweaks
 
         #endregion
 
-        #region Clan parties tweak
+        #region Clan Tweaks - Clan Parties Tweaks
 
-        [SettingPropertyBool("启用氏族部队调整", Order = 1, RequireRestart = false, HintText = "更改氏族部队的基本人数基础数量以及升级加成"), SettingPropertyGroup("氏族部队")]
+        [SettingPropertyBool("启用氏族部队调整", Order = 1, RequireRestart = false, HintText = "更改氏族部队的基本人数基础数量以及升级加成"), SettingPropertyGroup("氏族调整/氏族部队")]
         public bool ClanPartiesLimitTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("基础氏族部队上限", 1, 10, HintText = "游戏默认值为1,基础部队数量."), SettingPropertyGroup("氏族部队")]
+        [SettingPropertyInteger("基础氏族部队上限", 1, 10, HintText = "游戏默认值为1,基础部队数量."), SettingPropertyGroup("氏族调整/氏族部队")]
         public int BaseClanPartiesLimit { get; set; } = 2;
 
-        [SettingPropertyFloatingInteger("氏族等级奖励", 0.0f, 3f, HintText = "每个氏族等级,奖励部队数量"), SettingPropertyGroup("氏族部队")]
+        [SettingPropertyFloatingInteger("氏族等级奖励", 0.0f, 3f, HintText = "每个氏族等级,奖励部队数量"), SettingPropertyGroup("氏族调整/氏族部队")]
         public float ClanPartiesBonusPerClanTier { get; set; } = 0.5f;
+
+        [SettingPropertyBool("启用AI家族部队调整", Order = 1, RequireRestart = false, IsToggle = true, HintText = "更改AI 领主可以参加的部队人数."), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
+        public bool AIClanPartiesLimitTweakEnabled { get; set; } = false;
+
+        [SettingPropertyBool("也调整小家族势力", Order = 1, RequireRestart = false, HintText = "更改AI 小势力领主可以参加的部队的基本人数。 [根据氏族等级，原版是1-4。]"), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
+        public bool AIMinorClanPartiesLimitTweakEnabled { get; set; } = false;
+
+        [SettingPropertyInteger("增加AI家族部队上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加AI Lords可以参加的派对的基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
+        public int BaseAIClanPartiesLimit { get; set; } = 0;
+
+        [SettingPropertyBool("调整自定义生成部队", Order = 2, RequireRestart = false, IsToggle = true, HintText = "更改自定义生成领主可以使用的方的基本数目。 [根据氏族等级，当地人是1-4。]"), SettingPropertyGroup("氏族调整/氏族部队/自定义生成部队调整")]
+        public bool AICustomSpawnPartiesLimitTweakEnabled { get; set; } = false;
+
+        [SettingPropertyInteger("增加自定义生成部队的上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加“定制领主”可以参加的派对的基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/自定义生成部队调整")]
+        public int BaseAICustomSpawnPartiesLimit { get; set; } = 0;
 
         #endregion
 
@@ -664,16 +689,13 @@ namespace BannerlordTweaks
         //public bool AICanDecapitate { get; set; } = false;
 
         #endregion
-        /* Disabled until I can get the CreateArmy issue worked out.
-        #region Army Gathering Tweaks
+        #region Party Tweaks - Army Tweaks
 
-        [SettingPropertyBool("Gather Army Tweaks Enabled", Order = 1, RequireRestart = false, HintText = "Allows you to modify ability to gather armies before establishing player kingdom."), SettingPropertyGroup("Gather Army Tweak")]
-        public bool GatherArmyTweakEnabled { get; set; } = false;
 
-        [SettingPropertyBool("Create Army As Mercenary", Order = 1, RequireRestart = false, HintText = "Allows you to create armies as a mercenary and pay in gold."), SettingPropertyGroup("Gather Army Tweak")]
-        public bool AllowCreateArmyAsMerc { get; set; } = false;
-        
+        [SettingPropertyBool("全氏族军队不失去凝聚力", Order = 1, RequireRestart = false, HintText = "仅由氏族组成的军队不会失去凝聚力."), SettingPropertyGroup("部队调整/部队调整")]
+        public bool ClanArmyLosesNoCohesionEnabled { get; set; } = false;
+
+
         #endregion
-        */
     }
 }
