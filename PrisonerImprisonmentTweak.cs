@@ -14,7 +14,7 @@ namespace BannerlordTweaks
         public static void Apply(Campaign campaign)
         {
             if (campaign == null) throw new ArgumentNullException(nameof(campaign));
-            var escapeBehaviour = campaign.GetCampaignBehavior<PrisonerEscapeCampaignBehavior>();
+            var escapeBehaviour = campaign.GetCampaignBehavior<PrisonerReleaseCampaignBehavior>();
             if (escapeBehaviour != null && CampaignEvents.DailyTickHeroEvent != null)
             {
                 CampaignEvents.DailyTickHeroEvent.ClearListeners(escapeBehaviour);
@@ -22,36 +22,46 @@ namespace BannerlordTweaks
             }
         }
 
-        private static void Check(PrisonerEscapeCampaignBehavior escapeBehaviour, Hero hero)
+        private static void Check(PrisonerReleaseCampaignBehavior escapeBehaviour, Hero hero)
         {
-            if (escapeBehaviour == null || !(BannerlordTweaksSettings.Instance is { } settings)) return;
+            if (escapeBehaviour == null || !(BannerlordTweaksSettings.Instance is { } settings) || !hero.IsPrisoner) return;
 
-
-            if (hero.IsPrisoner && hero.PartyBelongedToAsPrisoner != null && hero.PartyBelongedToAsPrisoner.MapFaction != null)
+            if (hero.PartyBelongedToAsPrisoner != null && hero.PartyBelongedToAsPrisoner.MapFaction != null)
             {
                 bool flag = hero.PartyBelongedToAsPrisoner.MapFaction == Hero.MainHero.MapFaction || (hero.PartyBelongedToAsPrisoner.IsSettlement && hero.PartyBelongedToAsPrisoner.Settlement.OwnerClan == Clan.PlayerClan);
-                if (settings.PrisonerImprisonmentPlayerOnly)
-                    flag = flag || Kingdom.All.Contains(hero.PartyBelongedToAsPrisoner.MapFaction) || (hero.PartyBelongedToAsPrisoner.IsSettlement);
 
-                if (flag)
+                if ((settings.PrisonerImprisonmentPlayerOnly && flag) || (settings.PrisonerImprisonmentPlayerOnly == false && (Kingdom.All.Contains(hero.PartyBelongedToAsPrisoner.MapFaction) || hero.PartyBelongedToAsPrisoner.IsSettlement)))
+                    flag = true;
+
+                if (flag == true)
                 {
-                    //If the party doesn't have enough healthy soldiers or is starving or is at peace with prisoners faction, allow to attempt to escape.
-                    if (hero.PartyBelongedToAsPrisoner.NumberOfHealthyMembers < hero.PartyBelongedToAsPrisoner.NumberOfPrisoners ||
+                    //If the party doesn't have enough healthy soldiers, is starving, is at peace with prisoners faction, or if imprisoned long enough, allow to attempt to escape.
+                    if ((hero.PartyBelongedToAsPrisoner.NumberOfHealthyMembers < hero.PartyBelongedToAsPrisoner.NumberOfPrisoners && !hero.PartyBelongedToAsPrisoner.IsSettlement) ||
                         hero.PartyBelongedToAsPrisoner.IsStarving ||
                         (hero.MapFaction != null && FactionManager.IsNeutralWithFaction(hero.MapFaction, hero.PartyBelongedToAsPrisoner.MapFaction)) ||
                         (int)hero.CaptivityStartTime.ElapsedDaysUntilNow > settings.MinimumDaysOfImprisonment)
                     {
-                        typeof(PrisonerEscapeCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
-                        //escapeBehaviour.DailyHeroTick(hero);
+                        //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Escape Conditions met. Allow Escape Attempt.");
+                        typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
+                        return;
                     }
+                    //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Escape conditions not met. No Escape attempt.");
+                    return;
                 }
+
                 else
-                    typeof(PrisonerEscapeCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
-                //escapeBehaviour.DailyHeroTick(hero);
+                {
+                    //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Tweak Flag is false. Allow Escape Attmpt.");
+                    typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
+                }
+                return;
+
             }
             else
-                typeof(PrisonerEscapeCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
-            //escapeBehaviour.DailyHeroTick(hero);
+            {
+                //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Else Condition met. Operate as normal, allow escape attempt.");
+                typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
+            }
         }
 
         public static void DailyTick()

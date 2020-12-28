@@ -9,7 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => new TextObject("综合设置1.5.5.9 (cnedwin)", new Dictionary<string, TextObject>
+        public override string DisplayName => new TextObject("综合设置1.5.6.2 (cnedwin)", new Dictionary<string, TextObject>
     {
         { "VERSION", new TextObject(typeof(BannerlordTweaksSettings).Assembly.GetName().Version.ToString(3)) }
     }).ToString();
@@ -23,9 +23,6 @@ namespace BannerlordTweaks
 
         [SettingPropertyBool("显示食物天数", Order = 2, RequireRestart = false, HintText = "原版显示食物数量而不是食物的天数(大地图UI的右下角")]
         public bool ShowFoodDaysRemaining { get; set; } = false;
-
-        [SettingPropertyBool("远程同伴技能管理", Order = 3, RequireRestart = false, HintText = "当你的同伴不在你的队伍时，允许你管理他们的技能。")]
-        public bool RemoteCompanionSkillManagementEnabled { get; set; } = true;
 
         [SettingPropertyBool("启用“停止阴谋”任务计时器的自动扩展", Order = 4, RequireRestart = false, HintText = "由于TW尚未完成，因此自动延长“停止阴谋”任务的计时器。")]
         public bool TweakedConspiracyQuestTimerEnabled { get; set; } = true;
