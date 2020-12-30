@@ -305,7 +305,6 @@
     <Compile Include="Patches\HideoutMissionControllerPatches.cs" />
     <Compile Include="Patches\MapInfoVMPatch.cs" />
     <Compile Include="Patches\MapVMPatches.cs" />
-    <Compile Include="Patches\SkillVMPatch.cs" />
     <Compile Include="Patches\SmeltingVMPatches.cs" />
     <Compile Include="Patches\TournamentVMPatches.cs" />
     <Compile Include="Patches\TweakedBattleSizePiatch.cs" />

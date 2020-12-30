@@ -24,9 +24,6 @@ namespace BannerlordTweaks
         [SettingPropertyBool("显示食物天数", Order = 2, RequireRestart = false, HintText = "原版显示食物数量而不是食物的天数(大地图UI的右下角")]
         public bool ShowFoodDaysRemaining { get; set; } = false;
 
-        [SettingPropertyBool("启用远程同伴技能管理", Order = 3, RequireRestart = false, HintText = "允许你管理你的同伴的技能，当他们不在你的队伍中时。")]
-        public bool RemoteCompanionSkillManagementEnabled { get; set; } = true;
-
         [SettingPropertyBool("启用“停止阴谋”任务计时器的自动扩展", Order = 4, RequireRestart = false, HintText = "由于TW尚未完成，因此自动延长“停止阴谋”任务的计时器。")]
         public bool TweakedConspiracyQuestTimerEnabled { get; set; } = true;
 
