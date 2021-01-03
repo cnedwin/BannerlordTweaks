@@ -66,7 +66,7 @@ namespace BannerlordTweaks
 
         public static void DailyTick()
         {
-            DebugHelpers.DebugMessage("Respawn Fix : Triggered Daily Tick");
+            //DebugHelpers.DebugMessage("Respawn Fix : Triggered Daily Tick");
             foreach (Hero hero in Hero.All)
             {
                 if (hero == null) return;
@@ -77,12 +77,12 @@ namespace BannerlordTweaks
                     float days = hero.CaptivityStartTime.ElapsedDaysUntilNow;
                     if (BannerlordTweaksSettings.Instance is { } settings && (days > (settings.MinimumDaysOfImprisonment + 3)))
                     {
-                        DebugHelpers.ColorGreenMessage("Releasing " + hero.Name + " due to Missing Hero Bug. (" + (int)days + " days)");
-                        DebugHelpers.QuickInformationMessage("Releasing " + hero.Name + " due to Missing Hero Bug. (" + (int)days + " days)");
+                        DebugHelpers.ColorGreenMessage("正在释放 " + hero.Name + " 由于丢失英雄的BUG. (" + (int)days + " 天)");
+                        DebugHelpers.QuickInformationMessage("正在释放 " + hero.Name + " 由于丢失英雄的BUG. (" + (int)days + " 天)");
                         EndCaptivityAction.ApplyByReleasing(hero);
                     }
 
-                    DebugHelpers.DebugMessage("Tracking Hero for possible bug: " + hero.Name + " | State: " + heroState + " | Loc: " + hero.LastSeenPlace + " | Captivity days: " + (int)days);
+                    DebugHelpers.DebugMessage("追踪英雄可能的错误: " + hero.Name + " | 状态: " + heroState + " | 位置: " + hero.LastSeenPlace + " | 囚禁天数: " + (int)days);
                 }
             }
         }
