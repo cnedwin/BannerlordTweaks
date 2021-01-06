@@ -9,7 +9,7 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 
 namespace BannerlordTweaks.Patches
 {
-
+    
     [HarmonyPatch(typeof(GarrisonTroopsCampaignBehavior), "OnSettlementEntered")]
     class GarrisonTroopsCampaignBehaviorPatch
     {
@@ -23,7 +23,7 @@ namespace BannerlordTweaks.Patches
                 {
                     return false;
                 }
-            }
+             }
             return true;
         }
 

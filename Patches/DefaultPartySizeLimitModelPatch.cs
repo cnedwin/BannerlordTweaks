@@ -31,9 +31,9 @@ namespace BannerlordTweaks.Patches
             }
         }
 
-        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PartySizeTweakEnabled;
+    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PartySizeTweakEnabled;
     }
-
+    
     [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
     public class DefaultPrisonerSizeLimitModelPatch
     {
@@ -51,6 +51,6 @@ namespace BannerlordTweaks.Patches
             }
         }
 
-        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PrisonerSizeTweakEnabled;
+    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PrisonerSizeTweakEnabled;
     }
 }

@@ -15,7 +15,7 @@ namespace BannerlordTweaks.Patches
         {
             if (BannerlordTweaksSettings.Instance is { } settings && settings.PartyWageTweaksEnabled && mobileParty != null)
             {
-                if (mobileParty.IsMainParty || (mobileParty.Party.MapFaction == Hero.MainHero.MapFaction && settings.ApplyWageTweakToFaction && !mobileParty.IsGarrison))
+                if (mobileParty.IsMainParty || ( mobileParty.Party.MapFaction == Hero.MainHero.MapFaction && settings.ApplyWageTweakToFaction && !mobileParty.IsGarrison) )
                 {
                     float num = settings.PartyWagePercent;
                     __result = MathF.Round(__result * num);

@@ -72,6 +72,6 @@ namespace BannerlordTweaks
                 return base.GetPartyLimitForTier(clan, clanTierToCheck);
 
             return (int)Math.Ceiling(result.ResultNumber);
-        }
+        }            
     }
 }

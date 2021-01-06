@@ -102,7 +102,7 @@ namespace BannerlordTweaks.Patches
             }
             else return false;
         }
-
+ 
         private static void GetRecordsInfo()
         {
             recordsInfo = typeof(CraftingCampaignBehavior).GetField("_heroCraftingRecords", BindingFlags.Instance | BindingFlags.NonPublic);

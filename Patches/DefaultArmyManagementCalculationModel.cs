@@ -18,6 +18,7 @@ namespace BannerlordTweaks.Patches
         {
             int num1 = 0;
             ExplainedNumber explainedNumber = new ExplainedNumber(-2f, explanation, null);
+
             foreach (MobileParty party in army.Parties)
             {
                 if (party.LeaderHero.Clan != army.LeaderParty.LeaderHero.Clan)

@@ -61,7 +61,7 @@ namespace BannerlordTweaks
                     ExplainedNumber bonuses = new ExplainedNumber(1f, null);
                     PerkHelper.AddPerkBonusForCharacter(DefaultPerks.Medicine.PerfectHealth, hero.Clan.Leader.CharacterObject, true, ref bonuses);
                     num = (float)((6.9 - ((double)hero.Age - settings.MinPregnancyAge) * 0.2) * 0.02) / ((hero.Children!.Count + 1) * 0.2f) * bonuses.ResultNumber;
-                }
+                 }
 
                 if (settings.ClanFertilityBonusEnabled && hero!.Clan == Hero.MainHero.Clan)
                     //num *= 1.25f;

@@ -16,7 +16,7 @@ namespace BannerlordTweaks.Patches
     {
         static void Postfix(MissionAgentSpawnLogic __instance, ref int ____battleSize)
         {
-
+            
             if (BannerlordTweaksSettings.Instance is { } settings && settings.BattleSize > 0)
             {
                 DebugHelpers.DebugMessage("MissonAgentSpawnLogic Battle Size Adjustment Triggered");
@@ -26,13 +26,13 @@ namespace BannerlordTweaks.Patches
                 */
                 ____battleSize = BannerlordTweaksSettings.Instance.BattleSize;
             }
-
+                        
             return;
         }
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.BattleSizeTweakEnabled;
     }
-
+    
 
     [HarmonyPatch(typeof(BannerlordConfig), "BattleSize", MethodType.Getter)]
 

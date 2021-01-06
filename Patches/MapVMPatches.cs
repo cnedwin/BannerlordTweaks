@@ -30,25 +30,25 @@ using TaleWorlds.Localization;
 
 namespace BannerlordTweaks.Patches
 {
-	//[HarmonyPatch(typeof(MapVM), "CanGatherArmyWithReason")]
+	[HarmonyPatch(typeof(MapVM), "CanGatherArmyWithReason")]
 
-	//public class MapVMPatch
-	//{
-	//	static void Postfix(ref bool __result, ref string reasonText)
-	//	{
-	//		//DebugHelpers.DebugMessage("CanGatherArmy Triggered");
-	//		if (__result == false)
-	//		{
-	//			__result = true;
-	//			reasonText = "";
-	//		}
-	//	}
+	public class MapVMPatch
+	{
+		static void Postfix(ref bool __result, ref string reasonText)
+		{
+			//DebugHelpers.DebugMessage("CanGatherArmy Triggered");
+			if (__result == false)
+			{
+				__result = true;
+				reasonText = "";
+			}
+		}
 
-	//	static bool Prepare()
-	//	{
-	//		return BannerlordTweaksSettings.Instance.GatherArmyTweakEnabled;
-	//	}
-	//}
+		static bool Prepare()
+		{
+			return BannerlordTweaksSettings.Instance.GatherArmyTweakEnabled;
+		}
+	}
 
 	// Jiros: Borrowed from Mercenary Army Mod - Credit: Splintert
 	[HarmonyPatch(typeof(ArmyManagementVM), MethodType.Constructor, new Type[] { typeof(Action) })]
@@ -71,90 +71,90 @@ namespace BannerlordTweaks.Patches
 	}
 
 
-	//[HarmonyPatch(typeof(ArmyManagementVM), "ExecuteDone")]
-	//public class ExecuteDonePatch
-	//{
-	//	static bool Prefix(ArmyManagementVM __instance, MBBindingList<ArmyManagementItemVM> ____partiesToRemove, Action ____onClose)
-	//	{
-	//		// Only enable this hack if it is enabled and player is independent
-	//		// THIS IS A PORT OF ArmyManagementVM.ExecuteDone!
-	//		if (!Hero.MainHero.MapFaction.IsKingdomFaction && BannerlordTweaksSettings.Instance.AllowCreateArmyAsMerc)
-	//		{
-	//			int num = __instance.PartiesInCart.Sum((ArmyManagementItemVM P) => P.Cost);
-	//			bool flag = num <= 0 || (float)num <= Hero.MainHero.Clan.Influence;
-	//			if (flag && __instance.NewCohesion > __instance.Cohesion)
-	//			{
-	//				DebugHelpers.DebugMessage("Cohesion low trigger.");
-	//				if (MobileParty.MainParty.Army != null)
-	//				{
-	//					ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models.ArmyManagementCalculationModel;
-	//					int num2 = __instance.NewCohesion - __instance.Cohesion;
-	//					int cost = armyManagementCalculationModel.CalculateTotalInfluenceCost(MobileParty.MainParty.Army, (float)num2);
-	//					DebugHelpers.DebugMessage("Cohesion cost =" + cost);
-	//					//MobileParty.MainParty.Army.BoostCohesionWithInfluence((float)num2, cost);
-	//				}
-	//			}
-	//			if (__instance.PartiesInCart.Count > 1 && flag /* && MobileParty.MainParty.MapFaction.IsKingdomFaction*/)
-	//			{
-	//				if (MobileParty.MainParty.Army == null)
-	//				{
-	//					DebugHelpers.DebugMessage("MainParty.Army is null.");
-	//					if ((MobileParty.MainParty.MapFaction as Kingdom) is null)
-	//					{
-	//						string temp_kingdom = Hero.MainHero.Name.ToString();
-	//						CampaignCheats.CreatePlayerKingdom(new List<string>());
-	//					}
-	//					((Kingdom)MobileParty.MainParty.MapFaction).CreateArmy(Hero.MainHero, Hero.MainHero.HomeSettlement, Army.ArmyTypes.Patrolling);
-	//				}
-	//				foreach (ArmyManagementItemVM armyManagementItemVM in __instance.PartiesInCart)
-	//				{
-	//					if (armyManagementItemVM.Party != MobileParty.MainParty)
-	//					{
-	//						armyManagementItemVM.Party.Army = MobileParty.MainParty.Army;
-	//						SetPartyAiAction.GetActionForEscortingParty(armyManagementItemVM.Party, MobileParty.MainParty);
-	//						armyManagementItemVM.Party.IsJoiningArmy = true;
-	//					}
-	//				}
-	//				DebugHelpers.DebugMessage("Subtracting influence.");
-	//				Hero.MainHero.Clan.Influence -= (float)num;
-	//			}
-	//			if (____partiesToRemove.Count > 0)
-	//			{
-	//				DebugHelpers.DebugMessage("Have parties to remove.");
-	//				bool flag2 = false;
-	//				foreach (ArmyManagementItemVM armyManagementItemVM2 in ____partiesToRemove)
-	//				{
-	//					if (armyManagementItemVM2.Party == MobileParty.MainParty)
-	//					{
-	//						armyManagementItemVM2.Party.Army = null;
-	//						flag2 = true;
-	//					}
-	//				}
-	//				if (!flag2)
-	//				{
-	//					foreach (ArmyManagementItemVM armyManagementItemVM3 in ____partiesToRemove)
-	//					{
-	//						Army army = MobileParty.MainParty.Army;
-	//						if (army != null && army.Parties.Contains(armyManagementItemVM3.Party))
-	//						{
-	//							armyManagementItemVM3.Party.Army = null;
-	//						}
-	//					}
-	//				}
-	//				____partiesToRemove.Clear();
-	//			}
-	//			if (flag)
-	//			{
-	//				____onClose();
-	//				return false;
-	//			}
-	//			else
-	//				InformationManager.AddQuickInformation(new TextObject("{=Xmw93W6a}Not Enough Influence", null), 0, null, "");
+	[HarmonyPatch(typeof(ArmyManagementVM), "ExecuteDone")]
+	public class ExecuteDonePatch
+	{
+		static bool Prefix(ArmyManagementVM __instance, MBBindingList<ArmyManagementItemVM> ____partiesToRemove, Action ____onClose)
+		{
+			// Only enable this hack if it is enabled and player is independent
+			// THIS IS A PORT OF ArmyManagementVM.ExecuteDone!
+			if (!Hero.MainHero.MapFaction.IsKingdomFaction && BannerlordTweaksSettings.Instance.AllowCreateArmyAsMerc)
+			{
+				int num = __instance.PartiesInCart.Sum((ArmyManagementItemVM P) => P.Cost);
+				bool flag = num <= 0 || (float)num <= Hero.MainHero.Clan.Influence;
+				if (flag && __instance.NewCohesion > __instance.Cohesion)
+				{
+					DebugHelpers.DebugMessage("Cohesion low trigger.");
+					if (MobileParty.MainParty.Army != null)
+					{
+						ArmyManagementCalculationModel armyManagementCalculationModel = Campaign.Current.Models.ArmyManagementCalculationModel;
+						int num2 = __instance.NewCohesion - __instance.Cohesion;
+						int cost = armyManagementCalculationModel.CalculateTotalInfluenceCost(MobileParty.MainParty.Army, (float)num2);
+						DebugHelpers.DebugMessage("Cohesion cost =" + cost);
+						//MobileParty.MainParty.Army.BoostCohesionWithInfluence((float)num2, cost);
+					}
+				}
+				if (__instance.PartiesInCart.Count > 1 && flag /* && MobileParty.MainParty.MapFaction.IsKingdomFaction*/)
+				{
+					if (MobileParty.MainParty.Army == null)
+					{
+						DebugHelpers.DebugMessage("MainParty.Army is null.");
+						if ((MobileParty.MainParty.MapFaction as Kingdom) is null)
+                        {
+							string temp_kingdom = Hero.MainHero.Name.ToString();
+							CampaignCheats.CreatePlayerKingdom(new List<string>());
+						}
+						((Kingdom)MobileParty.MainParty.MapFaction).CreateArmy(Hero.MainHero, Hero.MainHero.HomeSettlement, Army.ArmyTypes.Patrolling);
+					}
+					foreach (ArmyManagementItemVM armyManagementItemVM in __instance.PartiesInCart)
+					{
+						if (armyManagementItemVM.Party != MobileParty.MainParty)
+						{
+							armyManagementItemVM.Party.Army = MobileParty.MainParty.Army;
+							SetPartyAiAction.GetActionForEscortingParty(armyManagementItemVM.Party, MobileParty.MainParty);
+							armyManagementItemVM.Party.IsJoiningArmy = true;
+						}
+					}
+					DebugHelpers.DebugMessage("Subtracting influence.");
+					Hero.MainHero.Clan.Influence -= (float)num;
+				}
+				if (____partiesToRemove.Count > 0)
+				{
+					DebugHelpers.DebugMessage("Have parties to remove."); 
+					bool flag2 = false;
+					foreach (ArmyManagementItemVM armyManagementItemVM2 in ____partiesToRemove)
+					{
+						if (armyManagementItemVM2.Party == MobileParty.MainParty)
+						{
+							armyManagementItemVM2.Party.Army = null;
+							flag2 = true;
+						}
+					}
+					if (!flag2)
+					{
+						foreach (ArmyManagementItemVM armyManagementItemVM3 in ____partiesToRemove)
+						{
+							Army army = MobileParty.MainParty.Army;
+							if (army != null && army.Parties.Contains(armyManagementItemVM3.Party))
+							{
+								armyManagementItemVM3.Party.Army = null;
+							}
+						}
+					}
+					____partiesToRemove.Clear();
+				}
+				if (flag)
+				{
+					____onClose();
+					return false;
+				}
+				else 
+					InformationManager.AddQuickInformation(new TextObject("{=Xmw93W6a}Not Enough Influence", null), 0, null, "");
 
-	//			return false;
-	//		}
-	//		return false;
-	//	}
-	//}
+				return false;
+			}
+			return false;
+		}
+	}
 
 }

@@ -192,7 +192,7 @@ namespace BannerlordTweaks.Patches
             IsSideDepletedPatch.Dueled = false;
         }
 
-        //Patch if it is set to not lose on player death
-        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && (settings.ContinueHideoutBattleOnPlayerDeath || settings.ContinueHideoutBattleOnPlayerLoseDuel);
+    //Patch if it is set to not lose on player death
+    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && (settings.ContinueHideoutBattleOnPlayerDeath || settings.ContinueHideoutBattleOnPlayerLoseDuel);
     }
 }

@@ -15,6 +15,6 @@ namespace BannerlordTweaks.Patches
             return false;
         }
 
-        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.HideoutBattleTroopLimitTweakEnabled;
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.HideoutBattleTroopLimitTweakEnabled; 
     }
 }

@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 namespace BannerlordTweaks.Patches
 {
 	[HarmonyPatch(typeof(UrbanCharactersCampaignBehavior), "SpawnUrbanCharactersAtGameStart")]
-
+	
 	public static class SpawnUrbanCharactersPatch
 	{
 		private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)

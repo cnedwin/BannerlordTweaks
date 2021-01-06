@@ -7,18 +7,14 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 
 
-namespace BannerlordTweaks
-{
-    public static class DebugHelpers
-    {
+namespace BannerlordTweaks {
+    public static class DebugHelpers {
         [Conditional("DEBUG")]
-        public static void DebugMessage(string message)
-        {
+        public static void DebugMessage(string message) {
             Message(message);
         }
 
-        public static void Message(string message)
-        {
+        public static void Message(string message) {
             InformationManager.DisplayMessage(new InformationMessage(message));
         }
 
@@ -46,13 +42,11 @@ namespace BannerlordTweaks
         {
             InformationManager.AddQuickInformation(new TextObject(message, null), 0, null, "");
         }
-
+        
 
         // From Modlib---
-        public static void ShowError(string message, string title = "", Exception? exception = null)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-            {
+        public static void ShowError(string message, string title = "", Exception? exception = null) {
+            if (string.IsNullOrWhiteSpace(title)) {
                 title = "";
             }
 
@@ -61,8 +55,7 @@ namespace BannerlordTweaks
 
         public static string ToStringFull(this Exception ex) => ex != null ? GetString(ex) : "";
 
-        private static string GetString(Exception ex)
-        {
+        private static string GetString(Exception ex) {
             StringBuilder sb = new StringBuilder();
             GetStringRecursive(ex, sb);
             sb.AppendLine();
@@ -71,14 +64,11 @@ namespace BannerlordTweaks
             return sb.ToString();
         }
 
-        private static void GetStringRecursive(Exception ex, StringBuilder sb)
-        {
-            while (true)
-            {
+        private static void GetStringRecursive(Exception ex, StringBuilder sb) {
+            while (true) {
                 sb.AppendLine(ex.GetType().Name + ":");
                 sb.AppendLine(ex.Message);
-                if (ex.InnerException == null)
-                {
+                if (ex.InnerException == null) {
                     return;
                 }
 

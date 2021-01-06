@@ -17,7 +17,7 @@ namespace BannerlordTweaks
             if (party.LeaderHero != null && BannerlordTweaksSettings.Instance is { } settings)
             {
                 int count = party.MemberRoster.Troops.Count();
-                if (party.LeaderHero == Hero.MainHero || settings.DailyTroopExperienceApplyToAllNPC || (settings.DailyTroopExperienceApplyToPlayerClanMembers && party.LeaderHero.Clan == Clan.PlayerClan))
+                if (party.LeaderHero == Hero.MainHero || settings.DailyTroopExperienceApplyToAllNPC || (settings.DailyTroopExperienceApplyToPlayerClanMembers && party.LeaderHero.Clan == Clan.PlayerClan) )
                 {
                     int experienceAmount = ExperienceAmount(party.LeaderHero);
                     if (experienceAmount > 0)
@@ -33,7 +33,7 @@ namespace BannerlordTweaks
                             //Debug
                             //DebugHelpers.DebugMessage($"{party.LeaderHero.Name}'s party granted {experienceAmount} experience to {count} {troops}."));
                             if (party.LeaderHero == Hero.MainHero)
-                                InformationManager.DisplayMessage(new InformationMessage($"综合设置Mod授予 {experienceAmount} 经验给 {count} {troops}."));
+                                InformationManager.DisplayMessage(new InformationMessage($"综合设置已授予 {experienceAmount} 经验 给 {count} {troops}."));
                         }
                     }
                 }

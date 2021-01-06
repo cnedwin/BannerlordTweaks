@@ -18,7 +18,7 @@ namespace BannerlordTweaks.Patches
             {
                 var battleRenownMultiplier = 1f;
 
-                if ((BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero))
+                if ( (BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero) )
                 {
                     battleRenownMultiplier = settings.BattleRenownMultiplier;
                 }

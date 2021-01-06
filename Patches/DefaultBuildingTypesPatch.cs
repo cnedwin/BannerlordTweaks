@@ -54,7 +54,7 @@ namespace BannerlordTweaks.Patches
                 ____buildingCastleGardens?.Initialize(new TextObject("{=yT6XN4Mr}Gardens"),
                     new TextObject("{=ZCLVOXgM}Fruit trees and vegetable gardens outside the walls provide food as long as there is no siege.", null),
                     new int[] { 500, 750, 1000 }, BuildingLocation.Castle,
-                    new Tuple<BuildingEffectEnum, float, float, float>[]
+                    new Tuple<BuildingEffectEnum, float, float, float>[] 
                     {
                         new Tuple<BuildingEffectEnum, float, float, float>(
                             BuildingEffectEnum.FoodProduction,
@@ -71,7 +71,7 @@ namespace BannerlordTweaks.Patches
                 ____buildingCastleMilitiaBarracks?.Initialize(new TextObject("{=l91xAgmU}Militia Grounds"),
                     new TextObject("{=YRrx8bAK}Provides battle training for citizens and recruit them into militia, each level increases daily militia recruitment."),
                     new int[3] { 500, 750, 1000 }, BuildingLocation.Castle,
-                    new Tuple<BuildingEffectEnum, float, float, float>[]
+                    new Tuple<BuildingEffectEnum, float, float, float>[] 
                     {
                         new Tuple<BuildingEffectEnum, float, float, float>(
                             BuildingEffectEnum.Militia,
