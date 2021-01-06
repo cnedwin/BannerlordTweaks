@@ -287,9 +287,6 @@
     <Compile Include="DismembermentMissionBehaviour.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DebugHelpers.cs" />
-    <Compile Include="Patches\CampaignUIHelperPatch.cs" />
-    <Compile Include="Patches\CharacterAttributeItemVMPatch.cs" />
-    <Compile Include="Patches\CharacterVMPatch.cs" />
     <Compile Include="Patches\DefaultPrisonerRecruitmentCalculationModelPatch.cs" />
     <Compile Include="Patches\DefaultTroopCampaignBehaviorPatch.cs" />
     <Compile Include="Patches\DefaultArmyManagementCalculationModel.cs" />
@@ -305,12 +302,9 @@
     <Compile Include="Patches\DefaultTournamentModelPatch.cs" />
     <Compile Include="Patches\DefaultBanditDensityModelPatch.cs" />
     <Compile Include="Patches\DefaultTroopCountLimitModelPatch.cs" />
-    <Compile Include="Patches\DefaultTroopCountLimitModelPatch.cs.cs" />
     <Compile Include="Patches\HeroPatches.cs" />
     <Compile Include="Patches\HideoutMissionControllerPatches.cs" />
     <Compile Include="Patches\MapInfoVMPatch.cs" />
-    <Compile Include="Patches\MapVMPatches.cs" />
-    <Compile Include="Patches\SkillVMPatch.cs" />
     <Compile Include="Patches\SmeltingVMPatches.cs" />
     <Compile Include="Patches\TournamentVMPatches.cs" />
     <Compile Include="Patches\TweakedBattleSizePiatch.cs" />
