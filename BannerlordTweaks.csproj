@@ -289,7 +289,6 @@
     <Compile Include="DebugHelpers.cs" />
     <Compile Include="Patches\DefaultPrisonerRecruitmentCalculationModelPatch.cs" />
     <Compile Include="Patches\DefaultTroopCampaignBehaviorPatch.cs" />
-    <Compile Include="Patches\DefaultArmyManagementCalculationModel.cs" />
     <Compile Include="Patches\CraftingCampaignBehaviourPatches.cs" />
     <Compile Include="Patches\CraftingVMPatch.cs" />
     <Compile Include="Patches\DefaultBattleRewardModelPatch.cs" />

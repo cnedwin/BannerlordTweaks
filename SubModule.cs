@@ -89,8 +89,7 @@ namespace BannerlordTweaks
                     gameStarter.AddModel(new TweakedCharacterDevelopmentModel());
                 if (settings.DifficultyTweaksEnabled)
                     gameStarter.AddModel(new TweakedDifficultyModel());
-//                if (settings.AIClanPartiesLimitTweakEnabled)
-//                    gameStarter.AddModel(new TweakedDefaultArmyManagementCalculationModel());
+
             }
         }
 
