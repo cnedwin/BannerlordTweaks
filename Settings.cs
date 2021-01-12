@@ -357,8 +357,14 @@ namespace BannerlordTweaks
 
         #region Party Tweaks - Army Tweaks
 
-        [SettingPropertyBool("全氏族军队不失去凝聚力", Order = 1, RequireRestart = false, HintText = "仅由氏族组成的军队不会失去凝聚力."), SettingPropertyGroup("部队调整/部队调整")]
-        public bool ClanArmyLosesNoCohesionEnabled { get; set; } = false;
+        [SettingPropertyBool("调整部队生成规模", Order = 0, RequireRestart = true, HintText = "调整领主战败重生后生成的部队规模."), SettingPropertyGroup("部队调整/部队调整")]
+        public bool Strategy_ModifyRespawnParty { get; set; }
+
+        [SettingPropertyInteger("AI领主部队重生规模", 0, 200, "0", Order = 1, RequireRestart = false, HintText = "调整AI领主战败重生后生成的部队规模."), SettingPropertyGroup("部队调整/部队调整")]
+        public int Strategy_ModifyRespawnParty_AILordPartySizeOnRespawn { get; set; } = 3;
+
+        [SettingPropertyInteger("玩家部队重生规模", 0, 200, "0", Order = 2, RequireRestart = false, HintText = "调整玩家氏族领主战败重生后生成的部队规模."), SettingPropertyGroup("部队调整/部队调整")]
+        public int Strategy_ModifyRespawnParty_PlayerPartySizeOnRespawn { get; set; }
 
         #endregion
 
