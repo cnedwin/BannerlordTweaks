@@ -271,7 +271,7 @@ namespace BannerlordTweaks
         [SettingPropertyBool("启用同伴上限调整", Order = 1, RequireRestart = false, HintText = "设置基础同伴限制和每个部落等级获得的奖励"), SettingPropertyGroup("同伴数量")]
         public bool CompanionLimitTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("基础同伴上限", 1, 20, HintText = "游戏默认值为3,设置基础同伴数量限制."), SettingPropertyGroup("同伴数量")]
+        [SettingPropertyInteger("基础同伴上限", 1, 50, HintText = "游戏默认值为3,设置基础同伴数量限制."), SettingPropertyGroup("同伴数量")]
         public int CompanionBaseLimit { get; set; } = 3;
 
         [SettingPropertyInteger("氏族等级奖励", 0, 10, HintText = "默认值为1。将奖励设置为每个氏族等级的同伴限制。这个值乘以你的氏族等级.请注意，领导能力“我们誓言”的特权也会使此数字增加1。"), SettingPropertyGroup("同伴数量")]
@@ -300,13 +300,13 @@ namespace BannerlordTweaks
         [SettingPropertyBool("也调整小家族势力", Order = 1, RequireRestart = false, HintText = "更改AI 小势力领主可以参加的部队的基本人数。 [根据氏族等级，原版是1-4。]"), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
         public bool AIMinorClanPartiesLimitTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("增加AI家族部队上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加AI Lords可以参加的派对的基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
+        [SettingPropertyInteger("增加AI家族部队上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加AI Lords可以带领军队的领主基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/AI领主部队调整")]
         public int BaseAIClanPartiesLimit { get; set; } = 0;
 
         [SettingPropertyBool("调整自定义生成部队", Order = 2, RequireRestart = false, IsToggle = true, HintText = "更改自定义生成领主可以使用的方的基本数目。 [根据氏族等级，当地人是1-4。]"), SettingPropertyGroup("氏族调整/氏族部队/自定义生成部队调整")]
         public bool AICustomSpawnPartiesLimitTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("增加自定义生成部队的上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加“定制领主”可以参加的派对的基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/自定义生成部队调整")]
+        [SettingPropertyInteger("增加自定义生成部队的上限", 1, 10, Order = 1, RequireRestart = false, HintText = "这将增加“定制领主”可以组建军队的领主基本人数。 [第3层及以下的本地为1，在T4处为2，在T5及更高处为3。]除非包括以下选项，否则不包括小派系."), SettingPropertyGroup("氏族调整/氏族部队/自定义生成部队调整")]
         public int BaseAICustomSpawnPartiesLimit { get; set; } = 0;
 
         #endregion
