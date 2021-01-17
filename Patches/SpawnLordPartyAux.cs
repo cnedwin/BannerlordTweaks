@@ -28,14 +28,14 @@ namespace BannerlordTweaks.Patches
 				troopNumberLimit = (int)((double)mobileParty.Party.PartySizeLimit * num2);
 			}
 			TextObject name = MobilePartyHelper.GeneratePartyName(hero.CharacterObject);
-			mobileParty.InitializeMobileParty(name, hero.Clan.DefaultPartyTemplate, position, spawnRadius, 0f, troopNumberLimit);
+			mobileParty.InitializeMobileParty(hero.Clan.DefaultPartyTemplate, position, spawnRadius, 0f, troopNumberLimit);
 			mobileParty.Party.Owner = hero;
 			mobileParty.Party.Visuals.SetMapIconAsDirty();
 			if (spawnSettlement != null)
 			{
 				mobileParty.SetMoveGoToSettlement(spawnSettlement);
 			}
-			mobileParty.InitializeMobileParty(name, hero.Clan.DefaultPartyTemplate, position, spawnRadius, 0f, troopNumberLimit);
+			mobileParty.InitializeMobileParty(hero.Clan.DefaultPartyTemplate, position, spawnRadius, 0f, troopNumberLimit);
 			mobileParty.ItemRoster.Add(new ItemRosterElement(DefaultItems.Grain, MBRandom.RandomInt(15, 30), null));
 			hero.PassedTimeAtHomeSettlement = (float)((int)(MBRandom.RandomFloat * 100f));
 			if (spawnSettlement != null)

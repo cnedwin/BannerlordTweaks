@@ -46,22 +46,22 @@ namespace BannerlordTweaks
                 float num = 0f;
                 if (!settings.PlayerCharacterFertileEnabled && HeroIsMainOrSpouseOfMain(hero))
                 {
-                    DebugHelpers.Message("Hero: " + hero.Name + "PlayerCharacterFertileEnabled Check - num = " + num);
+                    //DebugHelpers.DebugMessage("Hero: " + hero.Name + "PlayerCharacterFertileEnabled Check - num = " + num);
                     return num;
                 }
 
                 if (settings.MaxChildrenTweakEnabled && hero.Children != null && hero.Children.Any() && hero.Children.Count >= BannerlordTweaksSettings.Instance.MaxChildren)
                 {
-                    DebugHelpers.Message("Hero: " + hero.Name + "MaxChildrenTweakEnabled Check - num = " + num);
+                    //DebugHelpers.DebugMessage("Hero: " + hero.Name + "MaxChildrenTweakEnabled Check - num = " + num);
                     return num;
                 }
 
                 if (hero != null && hero.Spouse != null && hero.IsFertile && IsHeroAgeSuitableForPregnancy(hero))
                 {
-                    ExplainedNumber bonuses = new ExplainedNumber(1f, null);
+                    ExplainedNumber bonuses = new ExplainedNumber(1f);
                     PerkHelper.AddPerkBonusForCharacter(DefaultPerks.Medicine.PerfectHealth, hero.Clan.Leader.CharacterObject, true, ref bonuses);
                     num = (float)((6.9 - ((double)hero.Age - settings.MinPregnancyAge) * 0.2) * 0.02) / ((hero.Children!.Count + 1) * 0.2f) * bonuses.ResultNumber;
-                 }
+                }
 
                 if (settings.ClanFertilityBonusEnabled && hero!.Clan == Hero.MainHero.Clan)
                     //num *= 1.25f;

@@ -8,12 +8,12 @@ namespace BannerlordTweaks
 {
     public class TweakedSettlementMilitiaModel : DefaultSettlementMilitiaModel
     {
-        public override float CalculateMilitiaChange(Settlement settlement, StatExplainer? explanation = null)
+        public override ExplainedNumber CalculateMilitiaChange(Settlement settlement, bool includeDescriptions = false)
         {
             if (settlement == null) throw new ArgumentNullException(nameof(settlement));
-            float baseVal = base.CalculateMilitiaChange(settlement, explanation);
-            ExplainedNumber en = new ExplainedNumber(0f, explanation);
-            en.Add(baseVal);
+            ExplainedNumber baseVal = base.CalculateMilitiaChange(settlement, includeDescriptions);
+            ExplainedNumber en = baseVal;
+            en.Add(baseVal.ResultNumber);
             try
             {
                 if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementMilitiaBonusEnabled)
@@ -29,7 +29,7 @@ namespace BannerlordTweaks
             {
                 MessageBox.Show($"An error occurred in TweakedSettlementMilitiaModule:\n\n{ex.ToStringFull()}");
             }
-            return en.ResultNumber;
+            return en;
         }
 
         public override void CalculateMilitiaSpawnRate(Settlement settlement, out float meleeTroopRate, out float rangedTroopRate, out float meleeEliteTroopRate, out float rangedEliteTroopRate)

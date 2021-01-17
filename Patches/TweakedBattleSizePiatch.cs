@@ -16,23 +16,19 @@ namespace BannerlordTweaks.Patches
     {
         static void Postfix(MissionAgentSpawnLogic __instance, ref int ____battleSize)
         {
-            
+
             if (BannerlordTweaksSettings.Instance is { } settings && settings.BattleSize > 0)
             {
-                DebugHelpers.DebugMessage("MissonAgentSpawnLogic Battle Size Adjustment Triggered");
-                /* Scrap this, as it seems MaxNumberOfTroopsForMission is hard-coded. Enabling it seems to break the ability to tweak battle size. 
-                int MaxNumberOfTroopsForMission = (int)typeof(MissionAgentSpawnLogic).GetMethod("MaxNumberOfTroopsForMission", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, null);   
-                ____battleSize = Math.Min(BannerlordTweaksSettings.Instance.BattleSize, MaxNumberOfTroopsForMission);
-                */
+                //DebugHelpers.DebugMessage("MissonAgentSpawnLogic Battle Size Adjustment Triggered");
                 ____battleSize = BannerlordTweaksSettings.Instance.BattleSize;
             }
-                        
+
             return;
         }
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.BattleSizeTweakEnabled;
     }
-    
+
 
     [HarmonyPatch(typeof(BannerlordConfig), "BattleSize", MethodType.Getter)]
 

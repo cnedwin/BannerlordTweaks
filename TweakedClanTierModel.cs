@@ -29,7 +29,7 @@ namespace BannerlordTweaks
                 // int companionLimitFromTier = clanTier + 3;
                 int companionLimitFromTier = BannerlordTweaksSettings.Instance.CompanionLimitBonusPerClanTier;
 
-                ExplainedNumber explainedNumber = new ExplainedNumber((float)companionLimitFromTier, null);
+                ExplainedNumber explainedNumber = new ExplainedNumber((float)companionLimitFromTier);
                 if (clan.Leader.GetPerkValue(DefaultPerks.Leadership.WePledgeOurSwords))
                 {
                     explainedNumber.Add(DefaultPerks.Leadership.WePledgeOurSwords.PrimaryBonus, null, null);
@@ -43,7 +43,7 @@ namespace BannerlordTweaks
         // 1.5.5 - Modified based on DefaultClanTierModel.GetPartyLimitforTier + AddPartyLimitPerkEffects - Watch these methods to make sure they don't change from patch-to-patch.
         public override int GetPartyLimitForTier(Clan clan, int clanTierToCheck)
         {
-            ExplainedNumber result = new ExplainedNumber(0f, null);
+            ExplainedNumber result = new ExplainedNumber(0f);
 
             if (clan.Leader != null && clan.Leader.GetPerkValue(DefaultPerks.Leadership.TalentMagnet))
             {

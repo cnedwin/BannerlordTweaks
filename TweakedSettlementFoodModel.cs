@@ -9,14 +9,13 @@ namespace BannerlordTweaks
 {
     public class TweakedSettlementFoodModel : DefaultSettlementFoodModel
     {
-        public override float CalculateTownFoodStocksChange(Town town, StatExplainer? explanation = null)
+        public override ExplainedNumber CalculateTownFoodStocksChange(Town town, bool includeDescriptions = false)
         {
             if (town == null) throw new ArgumentNullException(nameof(town));
-            float baseVal = base.CalculateTownFoodStocksChange(town, explanation);
+            ExplainedNumber baseVal = base.CalculateTownFoodStocksChange(town, includeDescriptions);
             if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementFoodBonusEnabled)
             {
-                ExplainedNumber en = new ExplainedNumber(baseVal, explanation);
-                explanation?.Lines.Remove(explanation.Lines.Last());
+                ExplainedNumber en = baseVal;
 
                 if (town.IsCastle)
                     en.Add(settings.CastleFoodBonus, new TextObject("Military rations"));
@@ -27,17 +26,15 @@ namespace BannerlordTweaks
                 {
                     float malus = town.Owner.Settlement.Prosperity / 50f;
                     en.Add(malus, new TextObject("shouldn't be seen!"));
-                    explanation?.Lines.Remove(explanation.Lines.Last());
 
                     TextObject prosperityTextObj = GameTexts.FindText("str_prosperity", null);
-                    var line = explanation?.Lines.Where((x) => !string.IsNullOrWhiteSpace(x.Name) && x.Name == prosperityTextObj.ToString()).FirstOrDefault();
-                    if (line != null) explanation?.Lines.Remove(line);
+
 
                     malus = -town.Owner.Settlement.Prosperity / settings.SettlementProsperityFoodMalusDivisor;
                     en.Add(malus, prosperityTextObj);
                 }
 
-                return en.ResultNumber;
+                return en;
             }
             else
                 return baseVal;
