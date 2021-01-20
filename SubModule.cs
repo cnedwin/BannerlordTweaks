@@ -24,8 +24,7 @@ namespace BannerlordTweaks
                     harmony = new Harmony("mod.bannerlord.tweaks");
                     harmony.PatchAll();
 
-                    if (BannerlordTweaksSettings.Instance is { } settings && settings.BattleSizeTweakEnabled)
-                        BannerlordConfig.BattleSize = settings.BattleSize;
+
                     DebugHelpers.ColorOrangeMessage("Bannerlord Tweaks Loaded");
                 }
                 catch (Exception ex)

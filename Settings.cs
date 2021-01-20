@@ -65,11 +65,11 @@ namespace BannerlordTweaks
 
         #region Campaign Tweaks - Battle Size Tweak
 
-        [SettingPropertyBool("战斗规模调整", Order = 1, RequireRestart = false, HintText = "允许您在本机值之外设置作战规模限制。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
-        public bool BattleSizeTweakEnabled { get; set; } = false;
+        //[SettingPropertyBool("战斗规模调整", Order = 1, RequireRestart = false, HintText = "允许您在本机值之外设置作战规模限制。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
+        //public bool BattleSizeTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("战斗人数上限", 2, 1300, HintText = "设定战场上部队人数的上限。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
-        public int BattleSize { get; set; } = 600;
+        //[SettingPropertyInteger("战斗人数上限", 2, 1300, HintText = "设定战场上部队人数的上限。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
+        //public int BattleSize { get; set; } = 600;
 
         #endregion
 
