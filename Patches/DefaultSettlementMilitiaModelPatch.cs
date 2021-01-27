@@ -1,15 +1,37 @@
-﻿using TaleWorlds.CampaignSystem;
+﻿using HarmonyLib;
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.Localization;
 using System.Windows.Forms;
 using System;
 
-namespace BannerlordTweaks
+// Convert TweakedSettlementFoodModel to patch due to 1.5.7 changes.
+
+namespace BannerlordTweaks.Patches
 {
-    public class TweakedSettlementMilitiaModel : DefaultSettlementMilitiaModel
+    [HarmonyPatch(typeof(DefaultSettlementMilitiaModel), "CalculateMilitiaChange")]
+
+    public class DefaultSettlementMilitiaModelPatch
     {
-        /* Moved to Harmony Patch due to 1.5.7 Changes
-        
+        //static void Postfix(Settlement settlement, ref ExplainedNumber result, ref int __result)
+        static void Postfix(Settlement settlement, ref ExplainedNumber __result)
+        {
+            if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementMilitiaBonusEnabled && settlement is not null)
+            {
+                if (settlement.IsCastle)
+                    __result.Add(settings.CastleMilitiaBonus, new TextObject("Recruitment drive"));
+                if (settlement.IsTown)
+                    __result.Add(settings.TownMilitiaBonus, new TextObject("Citizen militia"));
+            }
+            return;
+        }
+
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.SettlementMilitiaBonusEnabled;
+    }
+
+    /*
+    public class DefaultSettlementMilitiaModelPatch : DefaultSettlementMilitiaModel
+    {
         public override float CalculateMilitiaChange(Settlement settlement, StatExplainer? explanation = null)
         {
             if (settlement == null) throw new ArgumentNullException(nameof(settlement));
@@ -32,11 +54,10 @@ namespace BannerlordTweaks
             }
             return en.ResultNumber;
         }
-    */
+    
         public override void CalculateMilitiaSpawnRate(Settlement settlement, out float meleeTroopRate, out float rangedTroopRate, out float meleeEliteTroopRate, out float rangedEliteTroopRate)
         {
             base.CalculateMilitiaSpawnRate(settlement, out meleeTroopRate, out rangedTroopRate, out float _meleeEliteTroopRate, out float _rangedEliteTroopRate);
-
             if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementMilitiaEliteSpawnRateBonusEnabled)
             {
                 _meleeEliteTroopRate += settings.SettlementEliteMeleeSpawnRateBonus;
@@ -46,4 +67,5 @@ namespace BannerlordTweaks
             rangedEliteTroopRate = _rangedEliteTroopRate;
         }
     }
+    */
 }

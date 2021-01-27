@@ -5,37 +5,44 @@ using TaleWorlds.CampaignSystem.SandBox.GameComponents.Party;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
 
+
 namespace BannerlordTweaks.Patches
 {
     [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyMemberSizeLimit")]
     public class DefaultPartySizeLimitModelPatch
     {
-        static void Postfix(MobileParty party, bool includeDescriptions,ref ExplainedNumber __result)
+        //static void Postfix(MobileParty party, StatExplainer explanation, ref int __result)
+        static void Postfix(MobileParty party, ref ExplainedNumber __result)
         {
-            if (party.LeaderHero != null && party.LeaderHero == Hero.MainHero && BannerlordTweaksSettings.Instance is { } settings)
+            if (party is not null && party.LeaderHero is not null && party.LeaderHero == Hero.MainHero && BannerlordTweaksSettings.Instance is { } settings)
             {
                 int num;
-                if (BannerlordTweaksSettings.Instance.LeadershipPartySizeBonusEnabled)
+                if (settings.LeadershipPartySizeBonusEnabled)
                 {
                     num = (int)Math.Ceiling(party.LeaderHero.GetSkillValue(DefaultSkills.Leadership) * settings.LeadershipPartySizeBonus);
-                    __result.Add((float)num, new TextObject("综合设置统帅奖励", null),null);
+                    __result.Add((float)num, new TextObject("BT 统率奖励"));
+                    //__result += num;
                 }
 
-                if (BannerlordTweaksSettings.Instance.StewardPartySizeBonusEnabled)
+                if (settings.StewardPartySizeBonusEnabled)
                 {
                     num = (int)Math.Ceiling(party.LeaderHero.GetSkillValue(DefaultSkills.Steward) * settings.StewardPartySizeBonus);
-                    __result.Add((float)num, new TextObject("综合设置管理奖励", null), null);
+                    __result.Add((float)num, new TextObject("BT 管理奖励"));
+                    //__result += num;
                 }
             }
         }
 
-    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PartySizeTweakEnabled;
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PartySizeTweakEnabled;
     }
-    
-    [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
+
+
+    //[HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
+    [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "GetPartyPrisonerSizeLimit")]
     public class DefaultPrisonerSizeLimitModelPatch
     {
-        static void Postfix(PartyBase party, bool includeDescriptions, ref ExplainedNumber __result)
+        //static void Postfix(PartyBase party, StatExplainer explanation, ref int __result)
+        private static void Postfix(PartyBase party, ref ExplainedNumber __result)
         {
             if (party.LeaderHero != null && party.LeaderHero == Hero.MainHero)
             {
@@ -43,11 +50,12 @@ namespace BannerlordTweaks.Patches
                 {
                     double percent = Math.Abs((double)(settings.PrisonerSizeTweakPercent) / 100);
                     double num = (int)Math.Ceiling(__result.ResultNumber * percent);
-                    __result.Add((float)num, new TextObject("综合设置俘虏上限", null), null);
+                    __result.Add((float)num, new TextObject("BT 俘虏上限奖励"));
+                    //__result += (int)Math.Round(num);
                 }
             }
         }
 
-    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PrisonerSizeTweakEnabled;
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PrisonerSizeTweakEnabled;
     }
 }

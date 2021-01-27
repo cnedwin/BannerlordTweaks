@@ -287,6 +287,8 @@
     <Compile Include="DismembermentMissionBehaviour.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DebugHelpers.cs" />
+    <Compile Include="Patches\DefaultSettlementFoodModelPatch.cs" />
+    <Compile Include="Patches\DefaultSettlementMilitiaModelPatch.cs" />
     <Compile Include="Patches\SpawnLordPartyAux.cs" />
     <Compile Include="Patches\DefaultPrisonerRecruitmentCalculationModelPatch.cs" />
     <Compile Include="Patches\DefaultTroopCampaignBehaviorPatch.cs" />

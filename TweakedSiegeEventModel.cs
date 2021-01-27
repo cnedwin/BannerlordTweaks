@@ -6,6 +6,7 @@ namespace BannerlordTweaks
 {
     public class TweakedSiegeEventModel : DefaultSiegeEventModel
     {
+        //public override float GetConstructionProgressPerHour(SiegeEngineType type, SiegeEvent siegeEvent, ISiegeEventSide side, StatExplainer? explanation = null)
         public override float GetConstructionProgressPerHour(SiegeEngineType type, SiegeEvent siegeEvent, ISiegeEventSide side)
         {
             if (BannerlordTweaksSettings.Instance is { } settings && settings.SiegeConstructionProgressPerDayMultiplierEnabled)
@@ -22,12 +23,23 @@ namespace BannerlordTweaks
                 return base.GetColleteralDamageCasualties(siegeEngineType, party);
         }
 
-        public override int GetDestructionCasualties(SiegeEvent siegeEvent, BattleSideEnum side, SiegeEngineType destroyedSiegeEngine)
+        /* Changed in 1.5.7 - Updated method below.
+        public override float GetDestructionCasualties(SiegeEngineType destroyedSiegeEngine)
         {
             if (BannerlordTweaksSettings.Instance is { } settings && settings.SiegeCasualtiesTweakEnabled)
                 return settings.SiegeDestructionCasualties;
             else
-                return base.GetDestructionCasualties(siegeEvent, side,destroyedSiegeEngine);
+                return base.GetDestructionCasualties(destroyedSiegeEngine);
         }
+        */
+
+        public override int GetDestructionCasualties(SiegeEvent siegeEvent, BattleSideEnum side, SiegeEngineType destroyedSiegeEngine)
+        {
+            if (BannerlordTweaksSettings.Instance is { } settings && settings.SiegeCasualtiesTweakEnabled)
+                return base.GetDestructionCasualties(siegeEvent, side, destroyedSiegeEngine) + settings.SiegeDestructionCasualties;
+            else
+                return base.GetDestructionCasualties(siegeEvent, side, destroyedSiegeEngine);
+        }
+
     }
 }

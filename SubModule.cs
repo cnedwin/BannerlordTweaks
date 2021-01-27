@@ -24,7 +24,6 @@ namespace BannerlordTweaks
                     harmony = new Harmony("mod.bannerlord.tweaks");
                     harmony.PatchAll();
 
-
                     DebugHelpers.ColorOrangeMessage("Bannerlord Tweaks Loaded");
                 }
                 catch (Exception ex)
@@ -38,9 +37,9 @@ namespace BannerlordTweaks
         {
             base.OnGameStart(game, gameStarterObject);
 
-            #pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
             AddModels(gameStarter: gameStarterObject as CampaignGameStarter);
-            #pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         private void AddModels(CampaignGameStarter gameStarter)
@@ -55,8 +54,9 @@ namespace BannerlordTweaks
                     gameStarter.AddModel(new TweakedClanTierModel());
                 if (settings.SettlementMilitiaBonusEnabled)
                     gameStarter.AddModel(new TweakedSettlementMilitiaModel());
-                if (settings.SettlementFoodBonusEnabled)
-                    gameStarter.AddModel(new TweakedSettlementFoodModel());
+                // Changed to Patch in 1.5.7
+                //if (settings.SettlementFoodBonusEnabled)
+                //    gameStarter.AddModel(new TweakedSettlementFoodModel());
                 if (settings.SiegeCasualtiesTweakEnabled || settings.SiegeConstructionProgressPerDayMultiplierEnabled)
                     gameStarter.AddModel(new TweakedSiegeEventModel());
                 if (settings.NoStillbirthsTweakEnabled || settings.NoMaternalMortalityTweakEnabled ||
@@ -88,7 +88,8 @@ namespace BannerlordTweaks
                     gameStarter.AddModel(new TweakedCharacterDevelopmentModel());
                 if (settings.DifficultyTweaksEnabled)
                     gameStarter.AddModel(new TweakedDifficultyModel());
-
+                //                if (settings.AIClanPartiesLimitTweakEnabled)
+                //                    gameStarter.AddModel(new TweakedDefaultArmyManagementCalculationModel());
             }
         }
 
@@ -132,4 +133,3 @@ namespace BannerlordTweaks
         }
     }
 }
-
