@@ -15,26 +15,35 @@ namespace BannerlordTweaks.Patches
     [HarmonyPatch(typeof(JoinKingdomAsClanBarterable), "GetUnitValueForFaction")]
     public class BarterablePatches
     {
-        static void Postfix(ref int __result, IFaction factionForEvaluation)
+        static void Postfix(ref int __result, IFaction factionForEvaluation, Kingdom ___TargetKingdom)
         {
-            if (BannerlordTweaksSettings.Instance is null) return;
+            if (!(BannerlordTweaksSettings.Instance is { } settings)) return;
 
-            Hero leader = factionForEvaluation.Leader;
+            Hero factionLeader = factionForEvaluation.Leader;
+
+            // Only proceed if the main hero is involved and it's not intra-faction barter.
+            if (___TargetKingdom.MapFaction == factionForEvaluation.MapFaction || ___TargetKingdom.MapFaction != Hero.MainHero.MapFaction || ___TargetKingdom.Leader != Hero.MainHero) return;
+
 
             // Don't let Faction Leaders Defect from their Own Factions
-            if (leader == null || leader.IsFactionLeader) return;
+            if (factionLeader == null || factionLeader.IsFactionLeader) return;
 
-            int num = BannerlordTweaksSettings.Instance.BarterablesJoinKingdomAsClanAdjustment;
-            if (BannerlordTweaksSettings.Instance.BarterablesTweaksEnabled)
+            int num = settings.BarterablesJoinKingdomAsClanAdjustment;
+
+            if (settings.BarterablesTweaksEnabled)
             {
-                __result = (int)__result * num;
+                double percent = (double)(num) / 100;
+                double cost = __result * percent;
+                //cost = Math.Abs(__result * (double)((num) / 100));
+                __result = (int)Math.Round(cost);
             }
-            if (BannerlordTweaksSettings.Instance.BarterablesJoinKingdomAsClanAltFormulaEnabled)
+
+            if (settings.BarterablesJoinKingdomAsClanAltFormulaEnabled)
             {
                 //int original_result = __result;
                 __result /= 10;
 
-                int relations = Hero.MainHero.GetRelation(leader);
+                int relations = Hero.MainHero.GetRelation(factionLeader);
                 if (relations > 100) relations = 99;
 
                 double percent = Math.Abs(((double)(relations) / 100) - 1);

@@ -3,7 +3,7 @@
   <Import Project="$(SolutionDir)\BannerlordTweaks.props" />
   <PropertyGroup>
     <!-- Get this from Props file or define here <MNB2DIR>[path]</MNB2DIR> -->
-    <MNB2DIR>E:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</MNB2DIR>
+    <MNB2DIR>E:\Games\156</MNB2DIR>
     <MOD_ID>BannerlordTweaks</MOD_ID>
     <MOD_FOLDER>$(MNB2DIR)\Modules\zz$(MOD_ID)\</MOD_FOLDER>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,7 +21,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <OutputPath>E:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\zzBannerlordTweaks\bin\Win64_Shipping_Client\</OutputPath>
+    <OutputPath>E:\Games\156\Modules\zzBannerlordTweaks\bin\Win64_Shipping_Client\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>9</LangVersion>
