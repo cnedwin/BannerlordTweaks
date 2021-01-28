@@ -9,7 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => "综合设置1.5.6.6 (cnedwin)";
+        public override string DisplayName => "综合设置1.5.6.7 (cnedwin)";
         public override string FolderName { get; } = "BannerlordTweaksSettings";
         public override string FormatType { get; } = "json2";
 
