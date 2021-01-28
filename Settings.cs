@@ -9,10 +9,7 @@ namespace BannerlordTweaks
     public class BannerlordTweaksSettings : AttributeGlobalSettings<BannerlordTweaksSettings>
     {
         public override string Id { get; } = "BannerlordTweaksSettings";
-        public override string DisplayName => new TextObject("综合设置1.5.6.3 (cnedwin)", new Dictionary<string, TextObject>
-    {
-        { "VERSION", new TextObject(typeof(BannerlordTweaksSettings).Assembly.GetName().Version.ToString(3)) }
-    }).ToString();
+        public override string DisplayName => "综合设置1.5.6.6 (cnedwin)";
         public override string FolderName { get; } = "BannerlordTweaksSettings";
         public override string FormatType { get; } = "json2";
 
@@ -68,11 +65,11 @@ namespace BannerlordTweaks
 
         #region Campaign Tweaks - Battle Size Tweak
 
-        [SettingPropertyBool("战斗规模调整", Order = 1, RequireRestart = false, HintText = "允许您在本机值之外设置作战规模限制。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
-        public bool BattleSizeTweakEnabled { get; set; } = false;
+        //[SettingPropertyBool("战斗规模调整", Order = 1, RequireRestart = false, HintText = "允许您在本机值之外设置作战规模限制。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
+        //public bool BattleSizeTweakEnabled { get; set; } = false;
 
-        [SettingPropertyInteger("战斗人数上限", 2, 1300, HintText = "设定战场上部队人数的上限。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
-        public int BattleSize { get; set; } = 600;
+        //[SettingPropertyInteger("战斗人数上限", 2, 1300, HintText = "设定战场上部队人数的上限。警告：将此值设置为1000以上可能会导致性能下降和崩溃"), SettingPropertyGroup("战斗规模调整")]
+        //public int BattleSize { get; set; } = 600;
 
         #endregion
 
