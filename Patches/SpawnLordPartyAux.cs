@@ -16,7 +16,6 @@ namespace BannerlordTweaks.Patches
 		public static bool Prefix(ref MobileParty __result, Hero hero, Vec2 position, float spawnRadius, Settlement spawnSettlement)
 		{
 			MobileParty mobileParty = MBObjectManager.Instance.CreateObject<MobileParty>(hero.CharacterObject.StringId + "_party_1");
-			mobileParty.IsLordParty = true;
 			mobileParty.AddElementToMemberRoster(hero.CharacterObject, 1, true);
 			mobileParty.ActualClan = hero.Clan;
 			int troopNumberLimit = (hero != Hero.MainHero && hero.Clan != Clan.PlayerClan) ? BannerlordTweaksSettings.Instance.Strategy_ModifyRespawnParty_AILordPartySizeOnRespawn : BannerlordTweaksSettings.Instance.Strategy_ModifyRespawnParty_PlayerPartySizeOnRespawn;
@@ -27,7 +26,7 @@ namespace BannerlordTweaks.Patches
 				double num2 = 1.0 - (double)randomFloat * num;
 				troopNumberLimit = (int)((double)mobileParty.Party.PartySizeLimit * num2);
 			}
-			TextObject name = MobilePartyHelper.GeneratePartyName(hero.CharacterObject);
+			TextObject name = mobileParty.LeaderHero.CharacterObject.GetName();
 			mobileParty.InitializeMobileParty(hero.Clan.DefaultPartyTemplate, position, spawnRadius, 0f, troopNumberLimit);
 			mobileParty.Party.Owner = hero;
 			mobileParty.Party.Visuals.SetMapIconAsDirty();

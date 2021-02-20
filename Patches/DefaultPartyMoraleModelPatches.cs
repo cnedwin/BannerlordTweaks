@@ -17,7 +17,7 @@ namespace BannerlordTweaks.Patches
 
             if (party.MemberRoster != null)
             {
-                foreach (TroopRosterElement troopRosterElement in party.MemberRoster)
+                foreach (TroopRosterElement troopRosterElement in party.MemberRoster.GetTroopRoster())
                 {
                     if (troopRosterElement.Character != null && troopRosterElement.Character.Culture != null && troopRosterElement.Character.Culture.Villager != null &&
                         (troopRosterElement.Character == MBObjectManager.Instance.GetObject<CharacterObject>(troopRosterElement.Character.Culture.Villager.StringId)) ||

@@ -16,15 +16,15 @@ namespace BannerlordTweaks
         {
             if (party.LeaderHero != null && BannerlordTweaksSettings.Instance is { } settings)
             {
-                int count = party.MemberRoster.Troops.Count();
+                int count = party.MemberRoster.GetTroopRoster().Count();
                 if (party.LeaderHero == Hero.MainHero || settings.DailyTroopExperienceApplyToAllNPC || (settings.DailyTroopExperienceApplyToPlayerClanMembers && party.LeaderHero.Clan == Clan.PlayerClan) )
                 {
                     int experienceAmount = ExperienceAmount(party.LeaderHero);
                     if (experienceAmount > 0)
                     {
-                        foreach (var troop in party.MemberRoster.Troops)
+                        foreach (var troop in party.MemberRoster.GetTroopRoster())
                         {
-                            party.MemberRoster.AddXpToTroop(experienceAmount, troop);
+                            party.MemberRoster.AddXpToTroop(experienceAmount, troop.Character);
                         }
 
                         if (settings.DisplayMessageDailyExperienceGain)
