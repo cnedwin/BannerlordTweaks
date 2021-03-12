@@ -12,7 +12,7 @@ namespace BannerlordTweaks.Patches
     public class DefaultPartySizeLimitModelPatch
     {
         //static void Postfix(MobileParty party, StatExplainer explanation, ref int __result)
-        static void Postfix(MobileParty party, ref ExplainedNumber __result)
+        static void Postfix(MobileParty party, bool includeDescriptions, ref ExplainedNumber __result)
         {
             if (party is not null && party.LeaderHero is not null && party.LeaderHero == Hero.MainHero && BannerlordTweaksSettings.Instance is { } settings)
             {
@@ -20,15 +20,15 @@ namespace BannerlordTweaks.Patches
                 if (settings.LeadershipPartySizeBonusEnabled)
                 {
                     num = (int)Math.Ceiling(party.LeaderHero.GetSkillValue(DefaultSkills.Leadership) * settings.LeadershipPartySizeBonus);
-                    __result.Add((float)num, new TextObject("BT 统率奖励"));
-                    //__result += num;
+                    __result.Add((float)num, new TextObject("BT 统率奖励"), null);
+
                 }
 
                 if (settings.StewardPartySizeBonusEnabled)
                 {
                     num = (int)Math.Ceiling(party.LeaderHero.GetSkillValue(DefaultSkills.Steward) * settings.StewardPartySizeBonus);
-                    __result.Add((float)num, new TextObject("BT 管理奖励"));
-                    //__result += num;
+                    __result.Add((float)num, new TextObject("BT 管理奖励"), null);
+
                 }
             }
         }
@@ -38,11 +38,11 @@ namespace BannerlordTweaks.Patches
 
 
     //[HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
-    [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "GetPartyPrisonerSizeLimit")]
+    [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
     public class DefaultPrisonerSizeLimitModelPatch
     {
         //static void Postfix(PartyBase party, StatExplainer explanation, ref int __result)
-        private static void Postfix(PartyBase party, ref ExplainedNumber __result)
+        private static void Postfix(PartyBase party, bool includeDescriptions, ref ExplainedNumber __result)
         {
             if (party.LeaderHero != null && party.LeaderHero == Hero.MainHero)
             {
@@ -50,8 +50,8 @@ namespace BannerlordTweaks.Patches
                 {
                     double percent = Math.Abs((double)(settings.PrisonerSizeTweakPercent) / 100);
                     double num = (int)Math.Ceiling(__result.ResultNumber * percent);
-                    __result.Add((float)num, new TextObject("BT 俘虏上限奖励"));
-                    //__result += (int)Math.Round(num);
+                    __result.Add((float)num, new TextObject("BT 俘虏上限奖励"), null);
+
                 }
             }
         }

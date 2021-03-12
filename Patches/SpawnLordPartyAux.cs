@@ -13,9 +13,10 @@ namespace BannerlordTweaks.Patches
 	[HarmonyPatch(typeof(MobilePartyHelper), "SpawnLordPartyAux")]
 	public class SpawnLordPartyAuxPatch
 	{
-		public static bool Prefix(ref MobileParty __result, Hero hero, Vec2 position, float spawnRadius, Settlement spawnSettlement)
+		public static bool Prefix(ref MobileParty __result, MobileParty mobileParty, Vec2 position, float spawnRadius, Settlement spawnSettlement)
 		{
-			MobileParty mobileParty = MBObjectManager.Instance.CreateObject<MobileParty>(hero.CharacterObject.StringId + "_party_1");
+			//MobileParty mobileParty = MBObjectManager.Instance.CreateObject<MobileParty>(hero.CharacterObject.StringId + "_party_1");
+			Hero hero = mobileParty.LeaderHero;
 			mobileParty.AddElementToMemberRoster(hero.CharacterObject, 1, true);
 			mobileParty.ActualClan = hero.Clan;
 			int troopNumberLimit = (hero != Hero.MainHero && hero.Clan != Clan.PlayerClan) ? BannerlordTweaksSettings.Instance.Strategy_ModifyRespawnParty_AILordPartySizeOnRespawn : BannerlordTweaksSettings.Instance.Strategy_ModifyRespawnParty_PlayerPartySizeOnRespawn;
@@ -42,19 +43,17 @@ namespace BannerlordTweaks.Patches
 				mobileParty.Ai.SetAIState(AIState.VisitingNearbyTown, null);
 				mobileParty.SetMoveGoToSettlement(spawnSettlement);
 			}
-			object[] parameters = new object[]
-			{
-				mobileParty
-			};
-			SpawnLordPartyAuxPatch.OnLordPartySpawnedMI.Invoke(CampaignEventDispatcher.Instance, parameters);
+			//object[] parameters = new object[]
+			//{
+			//	mobileParty
+			//};
+			//SpawnLordPartyAuxPatch.OnLordPartySpawnedMI.Invoke(CampaignEventDispatcher.Instance, parameters);
 			__result = mobileParty;
 			return false;
 		}
 
-		public static bool Prepare()
-		{
-			return BannerlordTweaksSettings.Instance.Strategy_ModifyRespawnParty;
-		}
+		static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.Strategy_ModifyRespawnParty;
+		
 
 		public SpawnLordPartyAuxPatch()
 		{
@@ -64,6 +63,6 @@ namespace BannerlordTweaks.Patches
 		{
 		}
 
-		private static readonly MethodInfo OnLordPartySpawnedMI = typeof(CampaignEventDispatcher).GetMethod("OnLordPartySpawned", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+		//private static readonly MethodInfo OnLordPartySpawnedMI = typeof(CampaignEventDispatcher).GetMethod("OnLordPartySpawned", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 	}
 }
