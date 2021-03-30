@@ -22,7 +22,7 @@ namespace BannerlordTweaks.Patches
             foreach (CraftingPiece piece in SmeltingHelper.GetNewPartsFromSmelting(item))
             {
                 if (piece != null && piece.Name != null && openPartMethodInfo != null)
-                    openPartMethodInfo.Invoke(__instance, new object[] { piece });
+                    openPartMethodInfo.Invoke(__instance, new object[] { piece, true });
             }
         }
 
@@ -75,7 +75,7 @@ namespace BannerlordTweaks.Patches
             {
                 int curCraftingStamina = __instance.GetHeroCraftingStamina(hero);
 
-                if (BannerlordTweaksSettings.Instance is not null && curCraftingStamina < BannerlordTweaksSettings.Instance.MaxCraftingStamina)
+                if (BannerlordTweaksSettings.Instance != null && curCraftingStamina < BannerlordTweaksSettings.Instance.MaxCraftingStamina)
                 {
                     int staminaGainAmount = BannerlordTweaksSettings.Instance.CraftingStaminaGainAmount;
 
