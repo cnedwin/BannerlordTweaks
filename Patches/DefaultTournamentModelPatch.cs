@@ -8,7 +8,7 @@ namespace BannerlordTweaks.Patches
     {
         static bool Prefix(ref int __result)
         {
-            if (BannerlordTweaksSettings.Instance is not null)
+            if (BannerlordTweaksSettings.Instance != null)
             {
                 __result = BannerlordTweaksSettings.Instance.TournamentRenownAmount;
                 return false;

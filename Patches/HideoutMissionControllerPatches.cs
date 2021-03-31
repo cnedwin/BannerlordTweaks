@@ -27,12 +27,12 @@ namespace BannerlordTweaks.Patches
                 {
                     if (HasTroopsRemaining(__instance, side))
                     {
-                        if (PlayerIsDead() && BannerlordTweaksSettings.Instance is { } settings)
+                        if (PlayerIsDead())
                         {
                             //If the player died during the boss fight
                             if (____hideoutMissionState == 5 || ____hideoutMissionState == 6)
                             {
-                                if (settings.ContinueHideoutBattleOnPlayerLoseDuel)
+                                if (BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerLoseDuel)
                                 {
                                     if (!Notified)
                                     {
@@ -57,11 +57,11 @@ namespace BannerlordTweaks.Patches
                             else
                             {
                                 //The player died during the initial battle phase
-                                if (settings.ContinueHideoutBattleOnPlayerDeath && !Dueled)
+                                if (BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerDeath && !Dueled)
                                 {
                                     if (!Notified)
                                     {
-                                        //The player is dead, but has troops remaining. We need to tell all remaining troops to charge, then report side is not depleted.
+                                        //The player is dead, but has troops remaining. We need to tell all remaining troops to charge, then report side != depleted.
                                         TrySetFormationsCharge(__instance, BattleSideEnum.Attacker);
                                         MakeAgentsYell(__instance, BattleSideEnum.Attacker);
                                         InformationManager.DisplayMessage(new InformationMessage("You have fallen in the attack. Your troops are charging to avenge you!"));
@@ -85,9 +85,11 @@ namespace BannerlordTweaks.Patches
             }
         }
 
-        //Patch if it is set to not lose on player death
-        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && (settings.ContinueHideoutBattleOnPlayerDeath || settings.ContinueHideoutBattleOnPlayerLoseDuel);
-
+        static bool Prepare()
+        {
+            //Patch if it is set to not lose on player death
+            return BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerDeath || BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerLoseDuel;
+        }
 
         private static bool HasTroopsRemaining(HideoutMissionController controller, BattleSideEnum side)
         {
@@ -192,7 +194,10 @@ namespace BannerlordTweaks.Patches
             IsSideDepletedPatch.Dueled = false;
         }
 
-    //Patch if it is set to not lose on player death
-    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && (settings.ContinueHideoutBattleOnPlayerDeath || settings.ContinueHideoutBattleOnPlayerLoseDuel);
+        static bool Prepare()
+        {
+            //Patch if it is set to not lose on player death
+            return BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerDeath || BannerlordTweaksSettings.Instance.ContinueHideoutBattleOnPlayerLoseDuel;
+        }
     }
 }

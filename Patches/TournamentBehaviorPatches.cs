@@ -10,16 +10,12 @@ namespace BannerlordTweaks.Patches
     {
         static bool Prefix(TournamentBehavior __instance)
         {
-            if (BannerlordTweaksSettings.Instance is { } settings)
-            {
-                typeof(TournamentBehavior).GetProperty("OverallExpectedDenars").SetValue(__instance, __instance.OverallExpectedDenars + settings.TournamentGoldRewardAmount);
-            }
+            typeof(TournamentBehavior).GetProperty("OverallExpectedDenars").SetValue(__instance, __instance.OverallExpectedDenars + BannerlordTweaksSettings.Instance.TournamentGoldRewardAmount);
             return true;
         }
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.TournamentGoldRewardEnabled;
     }
-
 
     [HarmonyPatch(typeof(TournamentBehavior), "CalculateBet")]
     public class CalculateBetPatch
@@ -28,20 +24,22 @@ namespace BannerlordTweaks.Patches
 
         static void Postfix(TournamentBehavior __instance)
         {
-            if (BannerlordTweaksSettings.Instance is { } settings)
+            if (BannerlordTweaksSettings.Instance != null)
             {
-                betOddInfo?.SetValue(__instance, MathF.Max((float)betOddInfo.GetValue(__instance), settings.MinimumBettingOdds, 0));
+                betOddInfo?.SetValue(__instance, MathF.Max((float)betOddInfo.GetValue(__instance), BannerlordTweaksSettings.Instance.MinimumBettingOdds, 0));
             }
+            
         }
 
         static bool Prepare()
         {
-            if (BannerlordTweaksSettings.Instance is { } settings && settings.MinimumBettingOddsTweakEnabled)
+            if (BannerlordTweaksSettings.Instance != null && BannerlordTweaksSettings.Instance.MinimumBettingOddsTweakEnabled)
             {
                 betOddInfo = typeof(TournamentBehavior).GetProperty(nameof(TournamentBehavior.BetOdd), BindingFlags.Public | BindingFlags.Instance);
                 return true;
             }
-            return false;
+            else
+                return false;
         }
     }
 }
