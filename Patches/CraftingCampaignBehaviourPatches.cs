@@ -75,7 +75,7 @@ namespace BannerlordTweaks.Patches
             {
                 int curCraftingStamina = __instance.GetHeroCraftingStamina(hero);
 
-                if (BannerlordTweaksSettings.Instance != null && curCraftingStamina < BannerlordTweaksSettings.Instance.MaxCraftingStamina)
+                if (!(BannerlordTweaksSettings.Instance is null) && curCraftingStamina < BannerlordTweaksSettings.Instance.MaxCraftingStamina)
                 {
                     int staminaGainAmount = BannerlordTweaksSettings.Instance.CraftingStaminaGainAmount;
 
@@ -102,7 +102,7 @@ namespace BannerlordTweaks.Patches
             }
             else return false;
         }
- 
+
         private static void GetRecordsInfo()
         {
             recordsInfo = typeof(CraftingCampaignBehavior).GetField("_heroCraftingRecords", BindingFlags.Instance | BindingFlags.NonPublic);

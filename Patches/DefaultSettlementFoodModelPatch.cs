@@ -16,21 +16,21 @@ namespace BannerlordTweaks.Patches
         //static void Postfix(Town town, ref ExplainedNumber result, ref int __result)
         static void Postfix(Town town, ref ExplainedNumber __result)
         {
-            if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementFoodBonusEnabled && town is not null)
+            if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementFoodBonusEnabled && !(town is null))
             {
                 if (town.IsCastle)
-                    __result.Add(settings.CastleFoodBonus, new TextObject("Military rations"));
+                    __result.Add(__result.ResultNumber * settings.CastleFoodBonus, new TextObject("Military rations"));
                 else if (town.IsTown)
-                    __result.Add(settings.TownFoodBonus, new TextObject("Citizen food drive"));
+                    __result.Add(__result.ResultNumber * settings.TownFoodBonus, new TextObject("Citizen food drive"));
 
                 if (settings.SettlementProsperityFoodMalusTweakEnabled && settings.SettlementProsperityFoodMalusDivisor != 50)
                 {
                     float malus = town.Owner.Settlement.Prosperity / 50f;
-                    __result.Add(malus, new TextObject("shouldn't be seen!"));
+                    TextObject prosperityTextObj = GameTexts.FindText("str_prosperity", null);
+                    __result.Add(malus, prosperityTextObj);
                     //explanation?.Lines.Remove(explanation.Lines.Last());
 
 
-                    TextObject prosperityTextObj = GameTexts.FindText("str_prosperity", null);
                     /*
                     var line = explanation?.Lines.Where((x) => !string.IsNullOrWhiteSpace(x.Name) && x.Name == prosperityTextObj.ToString()).FirstOrDefault();
                     if (line != null) explanation?.Lines.Remove(line);
@@ -45,38 +45,4 @@ namespace BannerlordTweaks.Patches
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.SettlementFoodBonusEnabled;
     }
-
-    /*
-    public class TweakedSettlementFoodModel : DefaultSettlementFoodModel
-    {
-        public override float CalculateTownFoodStocksChange(Town town, StatExplainer? explanation = null)
-        {
-            if (town == null) throw new ArgumentNullException(nameof(town));
-            float baseVal = base.CalculateTownFoodStocksChange(town, explanation);
-            if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementFoodBonusEnabled)
-            {
-                ExplainedNumber en = new ExplainedNumber(baseVal, explanation);
-                explanation?.Lines.Remove(explanation.Lines.Last());
-                if (town.IsCastle)
-                    en.Add(settings.CastleFoodBonus, new TextObject("Military rations"));
-                else if (town.IsTown)
-                    en.Add(settings.TownFoodBonus, new TextObject("Citizen food drive"));
-                if (settings.SettlementProsperityFoodMalusTweakEnabled && settings.SettlementProsperityFoodMalusDivisor != 50)
-                {
-                    float malus = town.Owner.Settlement.Prosperity / 50f;
-                    en.Add(malus, new TextObject("shouldn't be seen!"));
-                    explanation?.Lines.Remove(explanation.Lines.Last());
-                    TextObject prosperityTextObj = GameTexts.FindText("str_prosperity", null);
-                    var line = explanation?.Lines.Where((x) => !string.IsNullOrWhiteSpace(x.Name) && x.Name == prosperityTextObj.ToString()).FirstOrDefault();
-                    if (line != null) explanation?.Lines.Remove(line);
-                    malus = -town.Owner.Settlement.Prosperity / settings.SettlementProsperityFoodMalusDivisor;
-                    en.Add(malus, prosperityTextObj);
-                }
-                return en.ResultNumber;
-            }
-            else
-                return baseVal;
-        }
-    }
-    */
 }

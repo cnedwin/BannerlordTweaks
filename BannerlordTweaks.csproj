@@ -306,6 +306,7 @@
     <Compile Include="DismembermentMissionBehaviour.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DebugHelpers.cs" />
+    <Compile Include="Patches\DefaultArmyManagementCalculationModel.cs" />
     <Compile Include="Patches\DefaultSettlementFoodModelPatch.cs" />
     <Compile Include="Patches\DefaultSettlementMilitiaModelPatch.cs" />
     <Compile Include="Patches\MapVMPatches.cs" />

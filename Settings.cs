@@ -365,6 +365,18 @@ namespace BannerlordTweaks
 
         #endregion
 
+        #region Party Tweaks - Cohesion Tweaks
+
+        [SettingPropertyBool("凝聚力调整", Order = 1, RequireRestart = true, IsToggle = true, HintText = "仅由氏族组成的军队不会失去凝聚力."), SettingPropertyGroup("部队调整/凝聚力调整")]
+        public bool BTCohesionTweakEnabled { get; set; } = false;
+
+        [SettingPropertyFloatingInteger("凝聚力流失调整", 0f, 1f, "0%", Order = 2, RequireRestart = false, HintText = "随时间推移会降低多少凝聚力的修改器。 原版为100％，0％为禁用."), SettingPropertyGroup("部队调整/凝聚力调整")]
+        public float BTCohesionTweakv2 { get; set; } = 1f;
+
+        [SettingPropertyBool("全族军队不失去凝聚力", Order = 3, RequireRestart = false, HintText = "仅由氏族组成的军队不会失去凝聚力."), SettingPropertyGroup("部队调整/凝聚力调整")]
+        public bool ClanArmyLosesNoCohesionEnabled { get; set; } = false;
+
+        #endregion
         #region Party Tweaks - Caravan Tweaks
 
         [SettingPropertyBool("启用玩家商队部队规模调整", Order = 1, RequireRestart = false, HintText = "将配置的值应用于您的商队规模"), SettingPropertyGroup("玩家商队部队规模调整")]
@@ -392,6 +404,9 @@ namespace BannerlordTweaks
         [SettingPropertyFloatingInteger("管理等级奖励", 0f, 1f, HintText = "将相当于您的管理技能的设定百分比的奖励应用于您的团队规模."), SettingPropertyGroup("部队规模奖励")]
         public float StewardPartySizeBonus { get; set; } = 0.3f;
 
+        [SettingPropertyFloatingInteger("AI领主的部队规模", 0f, 2f, "0%", Order = 6, RequireRestart = false, HintText = "为玩家设置的也可以申请领主的派对人数奖励的百分比。 0％不会给AI加分。 您可能还想增加粮食产量（村庄产量，更大的需求）."), SettingPropertyGroup("部队规模奖励")]
+        public float PartySizeTweakAIFactor { get; set; } = 0f;
+
         #endregion
 
         #region Party Tweaks - Party Wage Tweaks
@@ -405,8 +420,11 @@ namespace BannerlordTweaks
         [SettingPropertyFloatingInteger("驻军工资调整", .05f, 5f, HintText = "将驻军工资调整为当地价值的％。 最低5％（.05），最高500％（5.00）[本地100％（1.00）]", Order = 2, RequireRestart = false), SettingPropertyGroup("工资调整")]
         public float GarrisonWagePercent { get; set; } = 1.0f;
 
-        [SettingPropertyBool("应用工资调整到你的势力", Order = 1, RequireRestart = false, HintText = "工资调整也适用于您的氏族/派系"), SettingPropertyGroup("工资调整")]
+        [SettingPropertyBool("工资调整也在玩家势力生效", Order = 4, RequireRestart = false, HintText = "也将工资修改器应用于您的氏族/派系"), SettingPropertyGroup("工资调整")]
         public bool ApplyWageTweakToFaction { get; set; } = false;
+
+        [SettingPropertyBool("工资调整也在AI势力生效", Order = 5, RequireRestart = false, HintText = "将工资修改器也应用于所有AI领主"), SettingPropertyGroup("工资调整")]
+        public bool ApplyWageTweakToAI { get; set; } = false;
 
         #endregion
 
@@ -688,6 +706,15 @@ namespace BannerlordTweaks
 
         [SettingPropertyInteger("工坊购买价格", 0, 15000, HintText = "游戏默认值为10,000,工坊购买成本."), SettingPropertyGroup("工坊调整/成本")]
         public int WorkshopBaseCost { get; set; } = 10000;
+
+        #endregion
+
+        #region Settlement Tweaks - Workshops - Workshop Effectivness
+
+        [SettingPropertyBool("工厂效率", RequireRestart = true, IsToggle = true, Order = 2, HintText = "原始值为100％。 设置用于计算车间成本的基础值（+车间类型基础成本+ 0.5 x城镇繁荣度）。 减少以减少车间成本."), SettingPropertyGroup("工坊调整/工厂效率")]
+        public bool WorkshopEffectivnessEnabled { get; set; } = false;
+        [SettingPropertyFloatingInteger("工厂每日花费调整", 1f, 5f, "0%", RequireRestart = false, Order = 2, HintText = "原始值为100％。 通过减少日常开支来提高研讨会的效率."), SettingPropertyGroup("工坊调整/工厂效率")]
+        public float WorkshopEffectivnessFactor { get; set; } = 1f;
 
         #endregion
 

@@ -24,13 +24,13 @@ namespace BannerlordTweaks.Patches
     [HarmonyPatch(typeof(TournamentBehavior), "CalculateBet")]
     public class CalculateBetPatch
     {
-        private static PropertyInfo? betOddInfo = null;
+        private static PropertyInfo? betOdd = null;
 
         static void Postfix(TournamentBehavior __instance)
         {
             if (BannerlordTweaksSettings.Instance is { } settings)
             {
-                betOddInfo?.SetValue(__instance, MathF.Max((float)betOddInfo.GetValue(__instance), settings.MinimumBettingOdds, 0));
+                betOdd?.SetValue(__instance, MathF.Max((float)betOdd.GetValue(__instance), settings.MinimumBettingOdds, 0));
             }
         }
 
@@ -38,7 +38,7 @@ namespace BannerlordTweaks.Patches
         {
             if (BannerlordTweaksSettings.Instance is { } settings && settings.MinimumBettingOddsTweakEnabled)
             {
-                betOddInfo = typeof(TournamentBehavior).GetProperty(nameof(TournamentBehavior.BetOdd), BindingFlags.Public | BindingFlags.Instance);
+                betOdd = typeof(TournamentBehavior).GetProperty(nameof(TournamentBehavior.BetOdd), BindingFlags.Public | BindingFlags.Instance);
                 return true;
             }
             return false;
