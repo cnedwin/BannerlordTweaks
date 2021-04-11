@@ -28,12 +28,6 @@ namespace BannerlordTweaks
             ? settings.PregnancyDuration
             : base.PregnancyDurationInDays;
 
-        /* Looks like CharacterFertilityProbability was removed in 1.5.2
-        public override float CharacterFertilityProbability => BannerlordTweaksSettings.Instance.CharacterFertilityProbabilityTweakEnabled
-            ? BannerlordTweaksSettings.Instance.CharacterFertilityProbability
-            : base.CharacterFertilityProbability;
-        */
-
         public override float GetDailyChanceOfPregnancyForHero(Hero hero)
         {
             if (hero == null) throw new ArgumentNullException(nameof(hero));
@@ -44,15 +38,13 @@ namespace BannerlordTweaks
                     return base.GetDailyChanceOfPregnancyForHero(hero);
 
                 float num = 0f;
-                if (!settings.PlayerCharacterFertileEnabled && HeroIsMainOrSpouseOfMain(hero))
+                if (settings.PlayerCharacterFertileEnabled && HeroIsMainOrSpouseOfMain(hero))
                 {
-                    //DebugHelpers.DebugMessage("Hero: " + hero.Name + "PlayerCharacterFertileEnabled Check - num = " + num);
                     return num;
                 }
 
-                if (settings.MaxChildrenTweakEnabled && hero.Children != null && hero.Children.Any() && hero.Children.Count >= BannerlordTweaksSettings.Instance.MaxChildren)
+                if (hero.Children != null && hero.Children.Any() && hero.Children.Count >= BannerlordTweaksSettings.Instance.MaxChildren)
                 {
-                    //DebugHelpers.DebugMessage("Hero: " + hero.Name + "MaxChildrenTweakEnabled Check - num = " + num);
                     return num;
                 }
 
@@ -63,8 +55,7 @@ namespace BannerlordTweaks
                     num = (float)((6.9 - ((double)hero.Age - settings.MinPregnancyAge) * 0.2) * 0.02) / ((hero.Children!.Count + 1) * 0.2f) * bonuses.ResultNumber;
                 }
 
-                if (settings.ClanFertilityBonusEnabled && hero!.Clan == Hero.MainHero.Clan)
-                    //num *= 1.25f;
+                if (hero!.Clan == Hero.MainHero.Clan)
                     num *= settings.ClanFertilityBonus;
 
                 return num;

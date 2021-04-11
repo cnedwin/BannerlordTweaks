@@ -32,48 +32,37 @@ namespace BannerlordTweaks.Patches
                 //    switch (party.LeaderHero.Clan.Kingdom.StringId)
                 //    {
                 //        case "vlandia":
-                //            num = __result.ResultNumber * settings.VlandiaBoost;
-                //            __result.Add((float)num, new TextObject("BT Vlandia Boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.VlandiaBoost, new TextObject("BT Vlandia Boost"));
                 //            break;
                 //        case "battania":
-                //            num = (__result.ResultNumber * settings.BattaniaBoost);
-                //            __result.Add((float)num, new TextObject("BT Battania Boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.BattaniaBoost, new TextObject("BT Battania Boost"));
                 //            break;
                 //        case "empire":
-                //            num = (__result.ResultNumber * settings.Empire_N_Boost);
-                //            __result.Add((float)num, new TextObject("BT Empire boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.Empire_N_Boost, new TextObject("BT Empire boost"));
                 //            break;
                 //        case "empire_s":
-                //            num = (__result.ResultNumber * settings.Empire_S_Boost);
-                //            __result.Add((float)num, new TextObject("BT Empire(S) boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.Empire_S_Boost, new TextObject("BT Empire(S) boost"));
                 //            break;
                 //        case "empire_w":
-                //            num = (__result.ResultNumber * settings.Empire_W_Boost);
-                //            __result.Add((float)num, new TextObject("BT Empire(W) boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.Empire_W_Boost, new TextObject("BT Empire(W) boost"));
                 //            break;
                 //        case "sturgia":
-                //            num = (__result.ResultNumber * settings.SturgiaBoost);
-                //            __result.Add((float)num, new TextObject("BT Sturgia boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.SturgiaBoost, new TextObject("BT Sturgia boost"));
                 //            break;
                 //        case "khuzait":
-                //            num = (__result.ResultNumber * settings.KhuzaitBoost);
-                //            __result.Add((float)num, new TextObject("BT Khuzait boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.KhuzaitBoost, new TextObject("BT Khuzait boost"));
                 //            break;
                 //        case "aserai":
-                //            num = (__result.ResultNumber * settings.Aseraiboost);
-                //            __result.Add((float)num, new TextObject("BT Aserai boost"));
+                //            __result.Add((float)__result.ResultNumber * settings.Aseraiboost, new TextObject("BT Aserai boost"));
                 //            break;
-
                 //    }
                 //}
             }
         }
 
-    static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.PartySizeTweakEnabled;
-}
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && (settings.PartySizeTweakEnabled);
+    }
 
-
-    //[HarmonyPatch(typeof(DefaultPartySizeLimitModel), "CalculateMobilePartyPrisonerSizeLimitInternal")]
     [HarmonyPatch(typeof(DefaultPartySizeLimitModel), "GetPartyPrisonerSizeLimit")]
     public class DefaultPrisonerSizeLimitModelPatch
     {

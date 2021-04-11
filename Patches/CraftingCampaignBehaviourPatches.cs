@@ -48,8 +48,6 @@ namespace BannerlordTweaks.Patches
     {
         static bool Prefix(CraftingCampaignBehavior __instance, ref int __result)
         {
-
-            //__result = BannerlordTweaksSettings.Instance.MaxCraftingStamina;
             __result = BannerlordTweaksSettings.Instance is { } settings ? settings.MaxCraftingStamina : 100;
             return false;
         }
@@ -66,7 +64,7 @@ namespace BannerlordTweaks.Patches
         {
             if (recordsInfo == null)
                 GetRecordsInfo();
-            //Get the list of hero records
+
             if (recordsInfo == null || __instance == null) throw new ArgumentNullException(nameof(__instance), $"Tried to run postfix for {nameof(CraftingCampaignBehavior)}.HourlyTickPatch but the recordsInfo or __instance was null.");
 
             IDictionary records = (IDictionary)recordsInfo.GetValue(__instance);

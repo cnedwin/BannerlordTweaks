@@ -32,7 +32,6 @@ namespace BannerlordTweaks
             {
                 xpAmount = 0;
             }
-            //There are three things to do here: Tournament Experience, Arena Experience, Troop Experience.
 
             if (attackerTroop.IsHero && missionType == MissionTypeEnum.Tournament)
             {

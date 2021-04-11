@@ -10,14 +10,14 @@ namespace BannerlordTweaks.Patches
 {
     static public class QuestPartySizeHelper
     {
-        static public int GetPartySize(MobileParty party)
+        static public int GetPartySize(MobileParty mobileParty)
         {
-            if (party == null) throw new ArgumentNullException(nameof(party));
-            int partySize = party.Party.NumberOfAllMembers;
+            if (mobileParty == null) throw new ArgumentNullException(nameof(mobileParty));
+            int partySize = mobileParty.Party.NumberOfAllMembers;
 
-            if (party.MemberRoster != null)
+            if (mobileParty.MemberRoster != null)
             {
-                foreach (TroopRosterElement troopRosterElement in party.MemberRoster.GetTroopRoster())
+                foreach (TroopRosterElement troopRosterElement in mobileParty.MemberRoster.GetTroopRoster())
                 {
                     if (troopRosterElement.Character != null && troopRosterElement.Character.Culture != null && troopRosterElement.Character.Culture.Villager != null &&
                         (troopRosterElement.Character == MBObjectManager.Instance.GetObject<CharacterObject>(troopRosterElement.Character.Culture.Villager.StringId)) ||
@@ -35,11 +35,11 @@ namespace BannerlordTweaks.Patches
     [HarmonyPatch(typeof(DefaultPartyMoraleModel), "GetPartySizeMoraleEffect")]
     public class GetPartySizeMoraleEffectPatch
     {
-        static bool Prefix(MobileParty party, ref ExplainedNumber result, TextObject ____partySizeMoraleText)
+        static bool Prefix(MobileParty mobileParty, ref ExplainedNumber result, TextObject ____partySizeMoraleText)
         {
-            if (party != null && party.Party != null && party.Party.LeaderHero != null && party.Party.LeaderHero == Hero.MainHero)
+            if (mobileParty != null && mobileParty.Party != null && mobileParty.Party.LeaderHero != null && !mobileParty.IsMilitia && !mobileParty.IsVillager)
             {
-                int num = QuestPartySizeHelper.GetPartySize(party) - party.Party.PartySizeLimit;
+                int num = QuestPartySizeHelper.GetPartySize(mobileParty) - mobileParty.Party.PartySizeLimit;
                 if (num > 0)
                 {
                     result.Add(-1f * (float)Math.Sqrt((double)num), ____partySizeMoraleText);
@@ -50,7 +50,6 @@ namespace BannerlordTweaks.Patches
         }
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.QuestCharactersIgnorePartySize;
-
     }
 
     [HarmonyPatch(typeof(DefaultPartyMoraleModel), "NumberOfDesertersDueToPaymentRatio")]

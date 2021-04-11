@@ -22,66 +22,56 @@ namespace BannerlordTweaks
         }
 
         private static void Check(PrisonerReleaseCampaignBehavior escapeBehaviour, Hero hero)
-         {
+        {
             if (escapeBehaviour == null || !(BannerlordTweaksSettings.Instance is { } settings) || !hero.IsPrisoner) return;
 
-            if (hero.PartyBelongedToAsPrisoner != null && hero.PartyBelongedToAsPrisoner.MapFaction != null)
+            if (hero.PartyBelongedToAsPrisoner != null && (hero.PartyBelongedToAsPrisoner.MapFaction != null || hero.PartyBelongedToAsPrisoner.LeaderHero?.Clan == Hero.MainHero.Clan))
             {
                 bool flag = hero.PartyBelongedToAsPrisoner.MapFaction == Hero.MainHero.MapFaction || (hero.PartyBelongedToAsPrisoner.IsSettlement && hero.PartyBelongedToAsPrisoner.Settlement.OwnerClan == Clan.PlayerClan);
-                
-                if ((settings.PrisonerImprisonmentPlayerOnly && flag) || (settings.PrisonerImprisonmentPlayerOnly == false && (Kingdom.All.Contains(hero.PartyBelongedToAsPrisoner.MapFaction) || hero.PartyBelongedToAsPrisoner.IsSettlement)) )
+
+                if ((settings.PrisonerImprisonmentPlayerOnly && flag) || (settings.PrisonerImprisonmentPlayerOnly == false && (Kingdom.All.Contains(hero.PartyBelongedToAsPrisoner.MapFaction) || hero.PartyBelongedToAsPrisoner.IsSettlement)))
                     flag = true;
 
                 if (flag == true)
                 {
-                    //If the party doesn't have enough healthy soldiers, is starving, is at peace with prisoners faction, or if imprisoned long enough, allow to attempt to escape.
-                    if ( (hero.PartyBelongedToAsPrisoner.NumberOfHealthyMembers < hero.PartyBelongedToAsPrisoner.NumberOfPrisoners && !hero.PartyBelongedToAsPrisoner.IsSettlement) ||
+                    if ((hero.PartyBelongedToAsPrisoner.NumberOfHealthyMembers < hero.PartyBelongedToAsPrisoner.NumberOfPrisoners && !hero.PartyBelongedToAsPrisoner.IsSettlement) ||
                         hero.PartyBelongedToAsPrisoner.IsStarving ||
                         (hero.MapFaction != null && FactionManager.IsNeutralWithFaction(hero.MapFaction, hero.PartyBelongedToAsPrisoner.MapFaction)) ||
                         (int)hero.CaptivityStartTime.ElapsedDaysUntilNow > settings.MinimumDaysOfImprisonment)
                     {
-                        //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Escape Conditions met. Allow Escape Attempt.");
                         typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
                         return;
                     }
-                    //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Escape conditions not met. No Escape attempt.");
                     return;
                 }
-                
+
                 else
                 {
-                    //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Tweak Flag is false. Allow Escape Attmpt.");
                     typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
-                }                
+                }
                 return;
 
             }
             else
             {
-                //DebugHelpers.DebugMessage("Prisoner Tweak DailyHeroTick: [" + hero.Name + "] Else Condition met. Operate as normal, allow escape attempt.");
                 typeof(PrisonerReleaseCampaignBehavior).GetMethod("DailyHeroTick", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(escapeBehaviour, new object[] { hero });
             }
         }
 
         public static void DailyTick()
         {
-            //DebugHelpers.DebugMessage("Respawn Fix : Triggered Daily Tick");
             foreach (Hero hero in Hero.All)
             {
                 if (hero == null) return;
                 if (hero.PartyBelongedToAsPrisoner == null && hero.IsPrisoner && hero.IsAlive && !hero.IsActive && !hero.IsNotSpawned && !hero.IsReleased)
                 {
-                    Hero.CharacterStates heroState = hero.HeroState;
-
                     float days = hero.CaptivityStartTime.ElapsedDaysUntilNow;
-                    if ( BannerlordTweaksSettings.Instance is { } settings && (days > (settings.MinimumDaysOfImprisonment + 3)) )
+                    if (BannerlordTweaksSettings.Instance is { } settings && (days > (settings.MinimumDaysOfImprisonment + 3)))
                     {
-                        DebugHelpers.ColorGreenMessage("正在释放 " + hero.Name + " 因为英雄丢失的BUG. (" + (int)days + " 天)");
-                        DebugHelpers.QuickInformationMessage("正在释放 " + hero.Name + " 因为英雄丢失的BUG. (" + (int)days + " 天)");
+                        DebugHelpers.ColorGreenMessage("释放 " + hero.Name + " 因为英雄丢失BUG失踪. (" + (int)days + " 天)");
+                        DebugHelpers.QuickInformationMessage("释放 " + hero.Name + " 因为英雄丢失BUG失踪. (" + (int)days + " 天)");
                         EndCaptivityAction.ApplyByReleasing(hero);
                     }
-
-                    DebugHelpers.DebugMessage("追踪英雄可能的错误: " + hero.Name + " | 状态: " + heroState + " | 位置: " + hero.LastSeenPlace + " | 囚禁天数: " + (int)days);
                 }
             }
         }

@@ -690,6 +690,16 @@ namespace BannerlordTweaks
 
         #endregion
 
+        #region Settlement Tweaks - Settlement culture
+
+        [SettingPropertyBool("定居点文化转变", Order = 1, RequireRestart = true, IsToggle = true, HintText = "改变与所有者有关的定居点文化。 在停用状态下，文化会还原."), SettingPropertyGroup("定居点调整/定居点文化转化")]
+        public bool EnableCultureChanger { get; set; } = false;
+
+        [SettingPropertyInteger("定居点文化转变需要的周数", 1, 52, "0 Weeks", Order = 2, RequireRestart = false, HintText = "几周后，定居点的文化变为其所有者的文化（并招募新文化集团的新成员）."), SettingPropertyGroup("定居点调整/定居点文化转化")]
+        public int TimeToChanceCulture { get; set; } = 4;
+
+        #endregion
+
         #region Settlement Tweaks - Workshop Tweaks
 
         [SettingPropertyBool("启用工坊调整", Order = 0, RequireRestart = false, HintText = "基础最大数量,以及每个家族等级获得的数量增加."), SettingPropertyGroup("工坊调整")]

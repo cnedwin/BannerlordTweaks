@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using TaleWorlds.CampaignSystem;
+﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
 namespace BannerlordTweaks
@@ -14,26 +13,29 @@ namespace BannerlordTweaks
 
         private void DailyTick(MobileParty party)
         {
-            if (party.LeaderHero != null && BannerlordTweaksSettings.Instance is { } settings)
+            if (party.LeaderHero != null)
             {
-                int count = party.MemberRoster.GetTroopRoster().Count();
-                if (party.LeaderHero == Hero.MainHero || settings.DailyTroopExperienceApplyToAllNPC || (settings.DailyTroopExperienceApplyToPlayerClanMembers && party.LeaderHero.Clan == Clan.PlayerClan) )
+                int count = party.MemberRoster.TotalManCount;
+                if (party.LeaderHero == Hero.MainHero || BannerlordTweaksSettings.Instance is { } settings && settings.DailyTroopExperienceApplyToAllNPC || BannerlordTweaksSettings.Instance is { } settings2 && settings2.DailyTroopExperienceApplyToPlayerClanMembers && party.LeaderHero.Clan == Clan.PlayerClan)
                 {
                     int experienceAmount = ExperienceAmount(party.LeaderHero);
                     if (experienceAmount > 0)
                     {
+                        int num = 0;
                         foreach (var troop in party.MemberRoster.GetTroopRoster())
                         {
-                            party.MemberRoster.AddXpToTroop(experienceAmount, troop.Character);
+                            if (!troop.Character.IsHero)
+                            {
+                                party.MemberRoster.AddXpToTroop(experienceAmount, troop.Character);
+                                num++;
+                            }
                         }
 
-                        if (settings.DisplayMessageDailyExperienceGain)
+                        if (BannerlordTweaksSettings.Instance is { } settings3 && settings3.DisplayMessageDailyExperienceGain)
                         {
-                            string troops = count == 1 ? "soldier" : "troops";
-                            //Debug
-                            //DebugHelpers.DebugMessage($"{party.LeaderHero.Name}'s party granted {experienceAmount} experience to {count} {troops}."));
-                            if (party.LeaderHero == Hero.MainHero)
-                                InformationManager.DisplayMessage(new InformationMessage($"综合设置已授予 {experienceAmount} 经验 给 {count} {troops}."));
+                            string troops = count == 1 ? "战士" : "部队";
+                            if (party.LeaderHero == Hero.MainHero && num > 0)
+                                InformationManager.DisplayMessage(new InformationMessage($"授予 {experienceAmount} 经验给 {num} {troops}."));
                         }
                     }
                 }
@@ -43,10 +45,10 @@ namespace BannerlordTweaks
         private static int ExperienceAmount(Hero h)
         {
             int leadership = h.GetSkillValue(DefaultSkills.Leadership);
-            if (BannerlordTweaksSettings.Instance is { } settings)
+            if (BannerlordTweaksSettings.Instance != null)
             {
-                if (leadership >= settings.DailyTroopExperienceRequiredLeadershipLevel)
-                    return (int)(settings.LeadershipPercentageForDailyExperienceGain * leadership);
+                if (leadership >= BannerlordTweaksSettings.Instance.DailyTroopExperienceRequiredLeadershipLevel)
+                    return (int)(BannerlordTweaksSettings.Instance.LeadershipPercentageForDailyExperienceGain * leadership);
             }
             return 0;
         }
