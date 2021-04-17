@@ -315,6 +315,7 @@
     <Compile Include="DebugHelpers.cs" />
     <Compile Include="Patches\DefaultArmyManagementCalculationModel.cs" />
     <Compile Include="Patches\DefaultSettlementFoodModelPatch.cs" />
+    <Compile Include="Patches\DefaultSettlementGarrisonModelPatch.cs" />
     <Compile Include="Patches\DefaultSettlementMilitiaModelPatch.cs" />
     <Compile Include="Patches\MapVMPatches.cs" />
     <Compile Include="Patches\SpawnLordPartyAux.cs" />

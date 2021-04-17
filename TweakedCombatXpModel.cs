@@ -27,7 +27,7 @@ namespace BannerlordTweaks
             {
                 troopPowerBasedOnContext = Campaign.Current.Models.MilitaryPowerModel.GetTroopPowerBasedOnContext(attackerTroop, MapEvent.BattleTypes.None, BattleSideEnum.None, false);
             }
-            xpAmount = MBMath.Round(0.4f * ((attackedTroop.GetPower() + 0.5f) * (float)(Math.Min(damage, num) + (isFatal ? num : 0))));
+            xpAmount = MBMath.Round(0.4f * ((troopPowerBasedOnContext + 0.5f) * (float)(Math.Min(damage, num) + (isFatal ? num : 0))));
             if (missionType == CombatXpModel.MissionTypeEnum.NoXp)
             {
                 xpAmount = 0;
@@ -73,7 +73,7 @@ namespace BannerlordTweaks
                     xpAmount = MathF.Round((float)xpAmount * 0.9f);
             }
 
-            ExplainedNumber xpToGain = new ExplainedNumber(xpAmount, false, null);
+            ExplainedNumber xpToGain = new(xpAmount, false, null);
             if (party != null)
             {
                 if (party.IsMobile && party.MobileParty.LeaderHero != null)

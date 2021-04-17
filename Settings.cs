@@ -84,8 +84,14 @@ namespace BannerlordTweaks
         [SettingPropertyFloatingInteger("战斗影响力倍数", 0.1f, 5f, HintText = "本机值为1.0。 您从战斗中获得的影响力乘以该值。"), SettingPropertyGroup("战斗奖励")]
         public float BattleInfluenceMultiplier { get; set; } = 1f;
 
+        [SettingPropertyFloatingInteger("战斗士气数量", 0.1f, 5f, "0%", RequireRestart = false, Order = 4, HintText = "原始值为100％。 您从战斗中获得的士气乘以该值."), SettingPropertyGroup("战斗奖励")]
+        public float BattleMoraleMultiplier { get; set; } = 1f;
+
         [SettingPropertyBool("应用到AI", Order = 1, RequireRestart = false, HintText = "应用一样的倍数到AI部队身上"), SettingPropertyGroup("战斗奖励")]
         public bool BattleRewardApplyToAI { get; set; } = true;
+
+        [SettingPropertyBool("显示计算信息", Order = 6, RequireRestart = false, HintText = "显示消息日志中声望和影响力调整的详细计算."), SettingPropertyGroup("战斗奖励")]
+        public bool BattleRewardShowDebug { get; set; } = false;
 
         #endregion
 
@@ -488,11 +494,11 @@ namespace BannerlordTweaks
 
         #region Settlement Tweaks - Disable Troop Donations
 
-        [SettingPropertyBool("禁止部队捐赠", Order = 1, RequireRestart = false, IsToggle = true, HintText = "禁止您的氏族（以及可选的王国）派遣部队向自己的住所捐款."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
+        [SettingPropertyBool("禁止部队捐赠", Order = 1, RequireRestart = true, IsToggle = true, HintText = "禁止您的氏族不丢向其氏族拥有的定居点捐赠部队."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
         public bool DisableTroopDonationPatchEnabled { get; set; } = false;
 
-        [SettingPropertyBool("禁止部队捐赠 - 应用到王国", Order = 1, RequireRestart = false, HintText = "将禁用部队捐赠扩展到整个王国的拥有的定居点."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
-        public bool DisableTroopDonationFactionWideEnabled { get; set; } = false;
+        [SettingPropertyBool("禁止部队捐赠 - 应用到王国", Order = 1, RequireRestart = false, HintText = "另外使您的氏族部队无法向任何定居点捐款."), SettingPropertyGroup("定居点建筑调整/禁止部队捐赠")]
+        public bool DisableTroopDonationAnyEnabled { get; set; } = false;
 
         #endregion
 
@@ -625,25 +631,35 @@ namespace BannerlordTweaks
 
         #endregion
 
-        #region Settlement Tweaks - Settlement Militia Bonus Tweaks
+        #region Settlement Tweaks - Normal Militia
 
-        [SettingPropertyBool("启用民兵奖励", Order = 1, RequireRestart = false, HintText = "给城镇和城堡里的民兵增加人数"), SettingPropertyGroup("定居点民兵奖励")]
+        [SettingPropertyBool("民兵调整", Order = 1, RequireRestart = true, IsToggle = true, HintText = "为城镇和城堡中的民兵成长提供固定奖励."), SettingPropertyGroup("定居点调整/民兵调整")]
         public bool SettlementMilitiaBonusEnabled { get; set; } = false;
 
-        [SettingPropertyFloatingInteger("城堡民兵增长", 0f, 5f, HintText = "本机值为0。给城堡里的民兵增加数量."), SettingPropertyGroup("定居点民兵奖励")]
-        public float CastleMilitiaBonus { get; set; } = 1.25f;
+        [SettingPropertyInteger("城堡民兵成长奖励", 0, 50, "0 民兵/天", RequireRestart = false, Order = 2, HintText = "本机值为0。增加了每天在城堡中征募多少民兵的固定奖励."), SettingPropertyGroup("定居点调整/民兵调整")]
+        public int CastleMilitiaBonusFlat { get; set; } = 0;
 
-        [SettingPropertyFloatingInteger("城镇民兵增长", 0f, 5f, HintText = "本机值为0。给城镇里的民兵增加数量."), SettingPropertyGroup("定居点民兵奖励")]
-        public float TownMilitiaBonus { get; set; } = 2.5f;
+        [SettingPropertyInteger("城镇民兵成长奖励", 0, 50, "0 民兵/天", RequireRestart = false, Order = 3, HintText = "本机值为0。增加城镇每天招募多少民兵的固定奖励."), SettingPropertyGroup("定居点调整/民兵调整")]
+        public int TownMilitiaBonusFlat { get; set; } = 0;
+
+        [SettingPropertyFloatingInteger("城堡民兵招募修改", 0f, 0.25f, "0.0%/天", RequireRestart = false, Order = 3, HintText = "原始值为2.5％。 修改每天在城堡中退役的民兵的比例."), SettingPropertyGroup("定居点调整/民兵调整")]
+        public float CastleMilitiaRetirementModifier { get; set; } = 0.025f;
+
+        [SettingPropertyFloatingInteger("城镇民兵招募修改", 0f, 0.25f, "0.0%/天", RequireRestart = false, Order = 3, HintText = "原始值为2.5％。 修改您的民兵每天在城镇中退休的百分比."), SettingPropertyGroup("定居点调整/民兵调整")]
+        public float TownMilitiaRetirementModifier { get; set; } = 0.025f;
+
+        #endregion
 
 
-        [SettingPropertyBool("启用贵族兵培育", Order = 1, RequireRestart = false, HintText = "增加在城镇和城堡民兵升级为正规军的几率"), SettingPropertyGroup("定居点民兵奖励")]
-        public bool SettlementMilitiaEliteSpawnRateBonusEnabled { get; set; } = true;
+        #region Settlement Tweaks - Militia Bonus Tweaks - Elite Militia
 
-        [SettingPropertyFloatingInteger("贵族步兵培育", 0f, 1f, HintText = "游戏默认值为0,为城镇和城堡中的民兵是近战部队产生的概率."), SettingPropertyGroup("定居点民兵奖励")]
-        public float SettlementEliteMeleeSpawnRateBonus { get; set; } = 0.15f;
+        [SettingPropertyBool("贵族民兵", Order = 1, RequireRestart = true, IsToggle = true, HintText = "为城镇和城堡中的民兵精英化提供了额外的机会."), SettingPropertyGroup("定居点调整/贵族民兵")]
+        public bool SettlementMilitiaEliteSpawnRateBonusEnabled { get; set; } = false;
 
-        [SettingPropertyFloatingInteger("贵族射手培育", 0f, 1f, HintText = "游戏默认值为0,为城镇和城堡中的民兵是远程部队产生的概率."), SettingPropertyGroup("定居点民兵奖励")]
+        [SettingPropertyFloatingInteger("精英近战民兵产生率", 0.01f, 1f, "0%", RequireRestart = false, Order = 2, HintText = "原始值为10％。 设置在城镇和城堡中产生的民兵是近战精英部队的机会."), SettingPropertyGroup("定居点调整/贵族民兵")]
+        public float SettlementEliteMeleeSpawnRateBonus { get; set; } = 0.1f;
+
+        [SettingPropertyFloatingInteger("精英远程民兵产生率", 0.01f, 1f, "0%", RequireRestart = false, Order = 3, HintText = "原始值为10％。 设置在城镇和城堡中产生的民兵是远程精锐部队的机会."), SettingPropertyGroup("定居点调整/贵族民兵")]
         public float SettlementEliteRangedSpawnRateBonus { get; set; } = 0.1f;
 
         #endregion
@@ -695,10 +711,14 @@ namespace BannerlordTweaks
         [SettingPropertyBool("定居点文化转变", Order = 1, RequireRestart = true, IsToggle = true, HintText = "改变与所有者有关的定居点文化。 在停用状态下，文化会还原."), SettingPropertyGroup("定居点调整/定居点文化转化")]
         public bool EnableCultureChanger { get; set; } = false;
 
+        [SettingPropertyBool("定居点文化转变为王国文化", Order = 1, RequireRestart = true, IsToggle = false, HintText = "与其将派系转变成其所有者氏族文化，不如将其转变成其王国文化。."), SettingPropertyGroup("定居点调整/定居点文化转化")]
+        public bool ChangeToKingdomCulture { get; set; } = false;
+
         [SettingPropertyInteger("定居点文化转变需要的周数", 1, 52, "0 Weeks", Order = 2, RequireRestart = false, HintText = "几周后，定居点的文化变为其所有者的文化（并招募新文化集团的新成员）."), SettingPropertyGroup("定居点调整/定居点文化转化")]
         public int TimeToChanceCulture { get; set; } = 4;
 
         #endregion
+
 
         #region Settlement Tweaks - Workshop Tweaks
 

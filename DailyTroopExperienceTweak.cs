@@ -35,7 +35,7 @@ namespace BannerlordTweaks
                         {
                             string troops = count == 1 ? "战士" : "部队";
                             if (party.LeaderHero == Hero.MainHero && num > 0)
-                                InformationManager.DisplayMessage(new InformationMessage($"授予 {experienceAmount} 经验给 {num} {troops}."));
+                                InformationManager.DisplayMessage(new InformationMessage($"授予 {experienceAmount} 经验 给 {num} {troops}."));
                         }
                     }
                 }

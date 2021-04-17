@@ -25,11 +25,11 @@ namespace BannerlordTweaks
 			foreach (Settlement settlement in from settlement in Campaign.Current.Settlements where settlement.IsTown || settlement.IsCastle || settlement.IsVillage select settlement)
 			{
 				startingCultures.Add(settlement, settlement.Culture);
-				if (settlement.OwnerClan.Kingdom != null && settlement.OwnerClan.Kingdom.Culture != null && settlement.OwnerClan.Culture != settlement.Culture && !this.WeekCounter.ContainsKey(settlement))
+				if (BannerlordTweaksSettings.Instance is { } settings && (((!settings.ChangeToKingdomCulture || settlement.OwnerClan.Kingdom == null) && settlement.OwnerClan.Culture != settlement.Culture) || (settlement.OwnerClan.Kingdom != null && settings.ChangeToKingdomCulture && settlement.OwnerClan.Kingdom.Culture != settlement.Culture)) && !this.WeekCounter.ContainsKey(settlement))
 				{
 					this.AddCounter(settlement);
 				}
-				else if ((settlement.OwnerClan.Kingdom != null && settlement.OwnerClan.Kingdom.Culture != null && settlement.OwnerClan.Culture != settlement.Culture) && !this.WeekCounter.ContainsKey(settlement) && this.IsSettlementDue(settlement))
+				else if (BannerlordTweaksSettings.Instance is { } settings2 && (((!settings2.ChangeToKingdomCulture || settlement.OwnerClan.Kingdom == null) && settlement.OwnerClan.Culture != settlement.Culture) || (settlement.OwnerClan.Kingdom != null && settings2.ChangeToKingdomCulture && settlement.OwnerClan.Kingdom.Culture != settlement.Culture)) && this.IsSettlementDue(settlement))
 				{
 					ChangeSettlementCulture.Transform(settlement, false);
 				}
@@ -57,11 +57,14 @@ namespace BannerlordTweaks
 
 		private void OnClanChangedKingdom(Clan clan, Kingdom arg2, Kingdom arg3, bool arg4, bool arg5)
 		{
-			if (clan.Culture != clan.Kingdom.Culture)
+			if (BannerlordTweaksSettings.Instance is { } settings && settings.ChangeToKingdomCulture)
 			{
-				foreach (Settlement settlement in from settlement in clan.Settlements where settlement.IsTown || settlement.IsCastle || settlement.IsVillage select settlement)
+				if (clan.Kingdom == null || clan.Kingdom.Culture != clan.Culture)
 				{
-					this.AddCounter(settlement);
+					foreach (Settlement settlement in from settlement in clan.Settlements where settlement.IsTown || settlement.IsCastle || settlement.IsVillage select settlement)
+					{
+						this.AddCounter(settlement);
+					}
 				}
 			}
 		}
@@ -70,10 +73,11 @@ namespace BannerlordTweaks
 		{
 			if (settlement.IsVillage || settlement.IsCastle || settlement.IsTown)
 			{
-
-				if (settlement.OwnerClan.Kingdom != null && settlement.OwnerClan.Kingdom.Culture != null && settlement.OwnerClan.Culture != settlement.Culture)
+				bool ChangeToKingdom = (BannerlordTweaksSettings.Instance is { } settings && settings.ChangeToKingdomCulture);
+				if (((!ChangeToKingdom || settlement.OwnerClan.Kingdom == null) && settlement.OwnerClan.Culture != settlement.Culture) || (settlement.OwnerClan.Kingdom != null && ChangeToKingdom && settlement.OwnerClan.Kingdom.Culture != settlement.Culture))
 				{
-					settlement.Culture = settlement.OwnerClan.Culture;
+					settlement.Culture = (ChangeToKingdom && settlement.OwnerClan.Kingdom != null) ? settlement.OwnerClan.Kingdom.Culture : settlement.OwnerClan.Culture;
+
 					if (removeTroops)
 					{
 						ChangeSettlementCulture.RemoveTroopsfromNotable(settlement);
@@ -128,7 +132,7 @@ namespace BannerlordTweaks
 		{
 			if (BannerlordTweaksSettings.Instance is { } settings && settings.TimeToChanceCulture > 0)
 			{
-				return this.WeekCounter[settlement] == settings.TimeToChanceCulture;
+				return this.WeekCounter[settlement] >= settings.TimeToChanceCulture;
 			}
 			else
 			{
@@ -157,7 +161,7 @@ namespace BannerlordTweaks
 		}
 
 
-		private static Dictionary<Settlement, CultureObject> initialCultureDictionary = new Dictionary<Settlement, CultureObject>();
-		private Dictionary<Settlement, int> WeekCounter = new Dictionary<Settlement, int>();
+		private static Dictionary<Settlement, CultureObject> initialCultureDictionary = new();
+		private Dictionary<Settlement, int> WeekCounter = new();
 	}
 }

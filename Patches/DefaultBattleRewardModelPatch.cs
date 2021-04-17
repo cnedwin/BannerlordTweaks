@@ -1,13 +1,9 @@
 ﻿using HarmonyLib;
-using Helpers;
 using System;
-using System.Windows.Forms;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents.Map;
-using TaleWorlds.Core;
 using TaleWorlds.Localization;
 
-// Explained Number Changed in 1.5.7 - All patches adjusted to new format.
 
 namespace BannerlordTweaks.Patches
 {
@@ -16,98 +12,92 @@ namespace BannerlordTweaks.Patches
     [HarmonyPriority(Priority.Last)]
     public class DefaultBattleRewardModelPatch
     {
-
-        //static bool Prefix(PartyBase party, float renownValueOfBattle, float contributionShare, StatExplainer explanation, ref float __result)
-        /*
-        static bool Prefix(PartyBase party, float renownValueOfBattle, float contributionShare, ref ExplainedNumber __result)
+        static void Postfix(PartyBase party, float renownValueOfBattle, float contributionShare, ref ExplainedNumber result, ref float __result)
         {
-            try
-            {
-                var battleRenownMultiplier = 1f;
-                if ( (BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero) )
-                {
-                    battleRenownMultiplier = settings.BattleRenownMultiplier;
-                }
-                //var stat = new ExplainedNumber((renownValueOfBattle * contributionShare) * battleRenownMultiplier, explanation);
-                if (party.IsMobile)
-                    if(party.MobileParty.HasPerk(DefaultPerks.Charm.ShowYourScars, false))
-                    {
-                        PerkHelper.AddPerkBonusForParty(DefaultPerks.Charm.ShowYourScars, party.MobileParty, true, ref __result);
-                        // DebugHelpers.DebugMessage($"DefaultBattleRewardModelRenownPatch. Show Your Scars Bonus\nHero is:"+party.LeaderHero.Name+"\nrenownValueOfBattle is: " + renownValueOfBattle + "\nbattleRenownMultiplier is:" + battleRenownMultiplier + "\nexplanation:" + explanation + "\n");
-                    }
-                    if (party.MobileParty.HasPerk(DefaultPerks.Throwing.LongReach, true))
-                    {
-                        PerkHelper.AddPerkBonusForParty(DefaultPerks.Throwing.LongReach, party.MobileParty, false, ref __result);
-                    }
-                    PerkObject famousCommander = DefaultPerks.Leadership.FamousCommander;
-                    MobileParty mobileParty = party.MobileParty;
-                //PerkHelper.AddPerkBonusForCharacter(famousCommander, (mobileParty != null) ? mobileParty.Leader : null, true, ref result);
-                PerkHelper.AddPerkBonusForCharacter(famousCommander, mobileParty?.Leader, true, ref __result);
-                __result.AddFactor(battleRenownMultiplier, new TaleWorlds.Localization.TextObject("BT Battle Renown Tweak Multiplier"));
-                //__result = result.ResultNumber;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred during DefaultBattleRewardModelRenownPatch. Reverting to original behaviour...\n\nException:\n{ex.Message}\n\n{ex.InnerException?.Message}\n\n{ex.InnerException?.InnerException?.Message}");
-                return true;
-            }
-        }
-        */
-
-
-        static void Postfix(PartyBase party, float renownValueOfBattle, float contributionShare, ref ExplainedNumber result)
-        {
-            //float num = __result.ResultNumber;
-            //float battleRenownMultiplier = 1f;
-            _ = (renownValueOfBattle, contributionShare);
-
             if ((BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero))
             {
                 float battleRenownMultiplier = settings.BattleRenownMultiplier;
-                result.AddFactor(battleRenownMultiplier, new TaleWorlds.Localization.TextObject("BT Battle Renown Tweak Multiplier"));
+                battleRenownMultiplier -= 1f;
+                if (party.LeaderHero == Hero.MainHero && settings.BattleRewardShowDebug)
+                {
+                    String BTTweak = "";
+
+                    if ((float)Math.Round((double)battleRenownMultiplier * 100f, 2) > 0f)
+                    {
+                        BTTweak = "+";
+                    }
+
+                    DebugHelpers.DebugMessage("荣誉值 = " + (float)Math.Round((double)renownValueOfBattle, 2) + "| 你的分享 = " + (float)Math.Round((double)renownValueOfBattle * contributionShare, 2) + "(" + (float)Math.Round((double)contributionShare * 100f, 1) + "%)" +
+                                                "\nPerkBonus = " + (float)Math.Round((double)result.ResultNumber - result.BaseNumber, 2) +
+                                                "(" + (float)Math.Round((double)(result.ResultNumber / result.BaseNumber - 1f) * 100f, 1) + "%)" +
+                                                "\nSum = " + (float)Math.Round((double)result.ResultNumber, 2) +
+                                                "\nBT Tweak = " + (float)Math.Round((double)battleRenownMultiplier * result.ResultNumber, 2) + "(" + BTTweak + (float)Math.Round((double)battleRenownMultiplier * 100f, 1) + "%)" +
+                                                "\n\n");
+                }
+                __result = result.ResultNumber + (battleRenownMultiplier * result.ResultNumber);
+                result.Add(battleRenownMultiplier * result.ResultNumber, new TextObject("BT Renown Tweak"), null);
             }
         }
 
         static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.BattleRewardTweaksEnabled;
     }
 
-
     [HarmonyPatch(typeof(DefaultBattleRewardModel), "CalculateInfluenceGain")]
     public class DefaultBattleRewardModelInfluencePatch
     {
 
-        /*
-        //static bool Prefix(PartyBase party, float influenceValueOfBattle, float contributionShare, ref ExplainedNumber result, ref float __result)
-        static bool Prefix(PartyBase party, float influenceValueOfBattle, float contributionShare, ref ExplainedNumber __result)
-        {
-            try
-            {
-                var battleInfluenceMultiplier = 1f;
-                //if (BannerlordTweaksSettings.Instance.BattleRewardApplyToAI || party.LeaderHero != null && party.LeaderHero == Hero.MainHero)
-                if ((BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero))
-                {
-                    battleInfluenceMultiplier = settings.BattleInfluenceMultiplier;
-                }
-                //var stat = new ExplainedNumber(party.MapFaction.IsKingdomFaction ? (influenceValueOfBattle * contributionShare * battleInfluenceMultiplier) : 0f, explanation, null);
-                __result.Add(party.MapFaction.IsKingdomFaction ? (influenceValueOfBattle * contributionShare * battleInfluenceMultiplier) : 0f, new TextObject("BT Inflience Gain Tweak"), null);
-                //__result = result.ResultNumber;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred during DefaultBattleRewardModelInfluencePatch. Reverting to original behavior... \n\nException:\n{ex.Message}\n\n{ex.InnerException?.Message}\n\n{ex.InnerException?.Message}");
-                return true;
-            }
-        }
-        */
-
-        static void Postfix(PartyBase party, float influenceValueOfBattle, float contributionShare, ref ExplainedNumber result)
+        static void Postfix(PartyBase party, float influenceValueOfBattle, float contributionShare, ref ExplainedNumber result, ref float __result)
         {
             if ((BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero))
             {
                 float battleInfluenceMultiplier = settings.BattleInfluenceMultiplier;
-                result.Add(party.MapFaction.IsKingdomFaction ? (influenceValueOfBattle * contributionShare * battleInfluenceMultiplier) : 0f, new TextObject("BT Inflience Gain Tweak"), null);
+                battleInfluenceMultiplier -= 1f;
+
+                if (party.LeaderHero == Hero.MainHero && settings.BattleRewardShowDebug)
+                {
+                    String BTTweak = "";
+
+                    if ((float)Math.Round((double)battleInfluenceMultiplier * 100f, 0) > 0f)
+                    {
+                        BTTweak = "+";
+                    }
+
+                    DebugHelpers.DebugMessage("影响力值 = " + (float)Math.Round((double)influenceValueOfBattle, 2) + " | 你的分享 = " + (float)Math.Round((double)influenceValueOfBattle * contributionShare, 2) + "(" + (float)Math.Round((double)contributionShare * 100f, 1) + "%)" +
+                                            "\nBT Tweak = " + (float)Math.Round((double)(battleInfluenceMultiplier * result.ResultNumber), 2) + "(" + BTTweak + (float)Math.Round((double)battleInfluenceMultiplier * 100f, 1) + "%)");
+                }
+                __result = result.ResultNumber + (battleInfluenceMultiplier * result.ResultNumber);
+                result.Add(party.MapFaction.IsKingdomFaction ? (result.ResultNumber * battleInfluenceMultiplier) : 0f, new TextObject("BT 影响力调整"), null);
+            }
+        }
+
+        static bool Prepare() => BannerlordTweaksSettings.Instance is { } settings && settings.BattleRewardTweaksEnabled;
+
+    }
+    [HarmonyPatch(typeof(DefaultBattleRewardModel), "CalculateMoraleGainVictory")]
+    public class DefaultBattleRewardModelMoralePatch
+    {
+
+        static void Postfix(PartyBase party, float renownValueOfBattle, float contributionShare, ref ExplainedNumber result, ref float __result)
+        {
+            if ((BannerlordTweaksSettings.Instance is { } settings && party.LeaderHero != null) && (settings.BattleRewardApplyToAI || party.LeaderHero == Hero.MainHero))
+            {
+                float battleMoraleMultiplier = settings.BattleMoraleMultiplier;
+                battleMoraleMultiplier -= 1f;
+
+                if (party.LeaderHero == Hero.MainHero && settings.BattleRewardShowDebug)
+                {
+                    String BTTweak = "";
+
+                    if ((float)Math.Round((double)battleMoraleMultiplier * 100f, 0) > 0f)
+                    {
+                        BTTweak = "+";
+                    }
+
+                    DebugHelpers.DebugMessage("Morale Value = " + (float)Math.Round((double)(result.ResultNumber / contributionShare), 2) + " | Your share = " + (float)Math.Round((double)result.ResultNumber * contributionShare, 2) + "(" + (float)Math.Round((double)contributionShare * 100f, 1) + "%)" +
+                                            "\nBT Tweak = " + (float)Math.Round((double)(battleMoraleMultiplier * result.ResultNumber), 2) + "(" + BTTweak + (float)Math.Round((double)battleMoraleMultiplier * 100f, 1) + "%)");
+                }
+                __result = result.ResultNumber + (battleMoraleMultiplier * result.ResultNumber);
+                result.Add(party.MapFaction.IsKingdomFaction ? (result.ResultNumber * battleMoraleMultiplier) : 0f, new TextObject("BT Influence Tweak"), null);
             }
         }
 

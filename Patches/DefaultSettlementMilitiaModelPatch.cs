@@ -2,10 +2,8 @@
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.Localization;
-using System.Windows.Forms;
 using System;
 
-// Convert TweakedSettlementFoodModel to patch due to 1.5.7 changes.
 
 namespace BannerlordTweaks.Patches
 {
@@ -13,15 +11,22 @@ namespace BannerlordTweaks.Patches
 
     public class DefaultSettlementMilitiaModelPatch
     {
-        //static void Postfix(Settlement settlement, ref ExplainedNumber result, ref int __result)
         static void Postfix(Settlement settlement, ref ExplainedNumber __result)
         {
             if (BannerlordTweaksSettings.Instance is { } settings && settings.SettlementMilitiaBonusEnabled && !(settlement is null))
             {
                 if (settlement.IsCastle)
-                    __result.Add(__result.ResultNumber * (settings.CastleMilitiaBonus - 1), new TextObject("Recruitment drive"));
+                {
+                    __result.Add(settlement.Militia * 0.025f, new TextObject("退休的", null));
+                    __result.Add(settings.CastleMilitiaRetirementModifier * -settlement.Militia, new TextObject("退休的", null));
+                    __result.Add(settings.CastleMilitiaBonusFlat, new TextObject("招聘驱动"));
+                }
                 if (settlement.IsTown)
-                    __result.Add(__result.ResultNumber * (settings.TownMilitiaBonus - 1), new TextObject("Citizen militia"));
+                {
+                    __result.Add(settlement.Militia * 0.025f, new TextObject("退休的", null));
+                    __result.Add(settings.TownMilitiaRetirementModifier * -settlement.Militia, new TextObject("退休的", null));
+                    __result.Add(settings.TownMilitiaBonusFlat, new TextObject("公民民兵"));
+                }
             }
             return;
         }

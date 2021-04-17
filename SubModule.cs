@@ -67,11 +67,11 @@ namespace BannerlordTweaks
                     gameStarter.AddModel(new TweakedPregnancyModel());
                 if (settings.AgeTweaksEnabled)
                 {
-                    TweakedAgeModel model = new TweakedAgeModel();
+                    TweakedAgeModel model = new();
                     List<string> configErrors = model.GetConfigErrors().ToList();
                     if (configErrors.Any())
                     {
-                        StringBuilder sb = new StringBuilder();
+                        StringBuilder sb = new();
                         sb.AppendLine("There is a configuration error in the \'Age\' tweaks from Bannerlord Tweaks.");
                         sb.AppendLine("Please check the below errors and fix the age settings in the settings menu:");
                         sb.AppendLine();
